@@ -26,38 +26,42 @@ class SeaMap:
         def creatingShip(player, decks):
             print("введите начало координат корабля: ")
             start = input().split()
-            if (-1<int(start[0])<10) and (-1<int(start[1])<10) and player.battleMap[int(start[0])][int(start[1])]!="О":
+            startNull = int(start[0])
+            startOne = int(start[1])
+            if (-1<startNull<11) and (-1<startOne<11) :
                 print("введите конец координат корабля: ")
                 end = input().split()
-                result = int(start[0])-int(end[0])+int(start[1])-int(end[1])
-                if (-1< int(end[0])<10) and (-1< int(end[1])<10) and (result==decks or result==(-decks)):
-                    if int(start[0])==int(end[0]):
+                endNull = int(end[0])
+                endOne = int(end[1])
+                result = startNull-endNull+startOne-endOne
+                if (-1< endNull<11) and (-1< endOne<11) and (result==decks or result==(-decks)):
+                    if startNull==endNull:
                         if result == -decks:
-                            for q in range(decks+1):
-                                if player.battleMap[int(start[0])][q] != "[O]":
-                                    player.battleMap[int(start[0])][q] = "[O]"
+                            for q in range(startOne, (startOne)+decks+1):
+                                if player.battleMap[startNull-1][q-1] != "[O]":
+                                    player.battleMap[startNull-1][q-1] = "[O]"
                                 else:
                                     print("Error! ")
 
                         else:
-                            for q in range(decks + 1):
-                                if player.battleMap[int(start[0])][q] != "[O]":
-                                    player.battleMap[int(start[0])][q] = "[O]"
+                            for q in range(endOne, (endOne)+decks+1):
+                                if player.battleMap[startNull-1][q-1] != "[O]":
+                                    player.battleMap[startNull-1][q-1] = "[O]"
                                 else:
                                     print("Error! ")
 
                     else:
                         if result == -decks:
-                            for q in range(decks + 1):
-                                if player.battleMap[q][int(start[1])] != "[O]":
-                                    player.battleMap[q][int(start[1])] = "[O]"
+                            for q in range(startNull, startNull + decks+1):
+                                if player.battleMap[q-1][startOne-1] != "[O]":
+                                    player.battleMap[q-1][startOne-1] = "[O]"
                                 else:
                                     print("Error! ")
 
                         else:
-                            for q in range(decks + 1):
-                                if player.battleMap[q][int(start[1])] != "[O]":
-                                    player.battleMap[q][int(start[1])] = "[O]"
+                            for q in range(endNull, endNull + decks+1):
+                                if player.battleMap[q-1][startOne-1] != "[O]":
+                                    player.battleMap[q-1][startOne-1] = "[O]"
                                 else:
                                     print("Error! ")
 
@@ -74,6 +78,8 @@ class SeaMap:
 
         print("Начнем с четырех палубнуго")
         creatingShip(self, 3)
+        print("Начнем с двух палубнуго")
+        creatingShip(self, 1)
         for i in range(10):
             print(self.battleMap[i])
 
