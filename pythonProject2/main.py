@@ -23,22 +23,25 @@ class SeaMap:
             self.shoot(int(input()), int(input()))
 
     def creatingShips(self):
-        def shipsNearby(player , row, col, decks):
+        def shipsNearbyHorizontal(player, row, col, decks):
             if player.battleMap[row][col] != "[O]" and player.battleMap[row][col - decks] != "[O]":
-                for i in range(decks-1):
-                    if player.battleMap[row-1][(col-1)-i] == "[O]":
+                for i in range(decks + 1):
+                    if player.battleMap[row - 1][(col) - i] == "[O]":
                         return False
-                    if player.battleMap[row+1][(col-1)-i] == "[O]":
+                    if player.battleMap[row + 1][(col) - i] == "[O]":
                         return False
                 return True
 
-
-
-
+        def shipsNearbyVertical(player, col, row, decks):
+            if player.battleMap[row][col] != "[O]" and player.battleMap[row - decks][col] != "[O]":
+                for i in range(decks + 1):
+                    if player.battleMap[row - i][col - 1] == "[O]":
+                        return False
+                    if player.battleMap[row - i][col + 1] == "[O]":
+                        return False
+                return True
 
         def creatingShip(player, decks):
-            self.battleMap[4][3] = "[O]"
-            self.battleMap[0][6] = "[O]"
             for i in range(10):
                 print(self.battleMap[i])
             print("введите начало координат корабля: ")
@@ -59,7 +62,7 @@ class SeaMap:
                                     print("Эти координаты заняты! ")
                                     creatingShip(player, decks)
                                     break
-                            if shipsNearby(player , startNull-1, (startOne) + decks, decks+2):
+                            if shipsNearbyHorizontal(player, startNull - 1, (startOne) + decks, decks + 2):
                                 for q in range(startOne, (startOne) + decks + 1):
                                     player.battleMap[startNull - 1][q - 1] = "[O]"
                             else:
@@ -74,8 +77,12 @@ class SeaMap:
                                     print("Эти координаты заняты! ")
                                     creatingShip(player, decks)
                                     break
-                            for q in range(endOne, (endOne) + decks + 1):
-                                player.battleMap[startNull - 1][q - 1] = "[O]"
+                            if shipsNearbyHorizontal(player, endNull - 1, (endOne) + decks, decks + 2):
+                                for q in range(endOne, (endOne) + decks + 1):
+                                    player.battleMap[startNull - 1][q - 1] = "[O]"
+                            else:
+                                print("Корабль слишком близок к другому ! ")
+                                creatingShip(player, decks)
 
                     else:
                         if result == -decks:
@@ -84,8 +91,12 @@ class SeaMap:
                                     print("Эти координаты заняты! ")
                                     creatingShip(player, decks)
                                     break
-                            for q in range(startNull, startNull + decks + 1):
-                                player.battleMap[q - 1][startOne - 1] = "[O]"
+                            if shipsNearbyVertical(player, startOne - 1, (startNull) + decks, decks + 1):
+                                for q in range(startNull, startNull + decks + 1):
+                                    player.battleMap[q - 1][startOne - 1] = "[O]"
+                            else:
+                                print("Корабль слишком близок к другому ! ")
+                                creatingShip(player, decks)
 
                         else:
                             for q in range(endNull, endNull + decks + 1):
@@ -93,22 +104,22 @@ class SeaMap:
                                     print("Эти координаты заняты! ")
                                     creatingShip(player, decks)
                                     break
-                            for q in range(endNull, endNull + decks + 1):
-                                player.battleMap[q - 1][startOne - 1] = "[O]"
+                            if shipsNearbyVertical(player, endOne - 1, (endNull) + decks, decks + 1):
+                                for q in range(endNull, endNull + decks + 1):
+                                    player.battleMap[q - 1][endOne - 1] = "[O]"
+                            else:
+                                print("Корабль слишком близок к другому ! ")
+                                creatingShip(player, decks)
 
                 else:
                     print("Вы неправильно ввели координаты ")
                     creatingShip(player, decks)
-
-
             else:
                 print("Вы неправильно ввели координаты ")
                 creatingShip(player, decks)
 
-
         print("Нужно расставить пять короблей по полю:"
               " 1 - четырех палубный , 1 - трех палубный, 2 - двух палубных ")
-
 
         print("Начнем с четырех-палубнуго корабля")
         creatingShip(self, 3)
