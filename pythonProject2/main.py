@@ -24,21 +24,21 @@ class SeaMap:
 
     def creatingShips(self):
         def shipsNearby(player , row, col, decks):
-            count = 0
-            if col + decks == 10 or col + decks == -1 :
-                count+=1
-            elif player.battleMap[row][col + decks] != "[O]":
-                count+=1
-            if count == 1:
+            if player.battleMap[row][col] != "[O]" and player.battleMap[row][col - decks] != "[O]":
+                for i in range(decks-1):
+                    if player.battleMap[row-1][(col-1)-i] == "[O]":
+                        return False
+                    if player.battleMap[row+1][(col-1)-i] == "[O]":
+                        return False
                 return True
-            else:
-                return False
+
 
 
 
 
         def creatingShip(player, decks):
-            self.battleMap[0][2] = "[O]"
+            self.battleMap[4][3] = "[O]"
+            self.battleMap[0][6] = "[O]"
             for i in range(10):
                 print(self.battleMap[i])
             print("введите начало координат корабля: ")
@@ -59,7 +59,7 @@ class SeaMap:
                                     print("Эти координаты заняты! ")
                                     creatingShip(player, decks)
                                     break
-                            if shipsNearby(player , startNull-1, (startOne) + decks-1, -decks-1):
+                            if shipsNearby(player , startNull-1, (startOne) + decks, decks+2):
                                 for q in range(startOne, (startOne) + decks + 1):
                                     player.battleMap[startNull - 1][q - 1] = "[O]"
                             else:
