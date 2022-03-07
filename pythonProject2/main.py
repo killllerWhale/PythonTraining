@@ -9,7 +9,7 @@ class SeaMap:
         if check == "x":
             print("Вы сюда стреляли! Попробуйте еще раз...")
             print("Введите кординаты: ")
-            self.shoot(int(input()),int(input()))
+            self.shoot(int(input()), int(input()))
         if check == "[]":
             print("Вы промазали! ")
             return False
@@ -23,62 +23,100 @@ class SeaMap:
             self.shoot(int(input()), int(input()))
 
     def creatingShips(self):
+        def shipsNearby(player , row, col, decks):
+            count = 0
+            if col + decks == 10 or col + decks == -1 :
+                count+=1
+            elif player.battleMap[row][col + decks] != "[O]":
+                count+=1
+            if count == 1:
+                return True
+            else:
+                return False
+
+
+
+
         def creatingShip(player, decks):
+            self.battleMap[0][2] = "[O]"
+            for i in range(10):
+                print(self.battleMap[i])
             print("введите начало координат корабля: ")
             start = input().split()
             startNull = int(start[0])
             startOne = int(start[1])
-            if (-1<startNull<11) and (-1<startOne<11) :
+            if (-1 < startNull < 11) and (-1 < startOne < 11):
                 print("введите конец координат корабля: ")
                 end = input().split()
                 endNull = int(end[0])
                 endOne = int(end[1])
-                result = startNull-endNull+startOne-endOne
-                if (-1< endNull<11) and (-1< endOne<11) and (result==decks or result==(-decks)):
-                    if startNull==endNull:
+                result = startNull - endNull + startOne - endOne
+                if (-1 < endNull < 11) and (-1 < endOne < 11) and (result == decks or result == (-decks)):
+                    if startNull == endNull:
                         if result == -decks:
-                            for q in range(startOne, (startOne)+decks+1):
-                                if player.battleMap[startNull-1][q-1] != "[O]":
-                                    player.battleMap[startNull-1][q-1] = "[O]"
-                                else:
-                                    print("Error! ")
+                            for q in range(startOne, (startOne) + decks + 1):
+                                if player.battleMap[startNull - 1][q - 1] == "[O]":
+                                    print("Эти координаты заняты! ")
+                                    creatingShip(player, decks)
+                                    break
+                            if shipsNearby(player , startNull-1, (startOne) + decks-1, -decks-1):
+                                for q in range(startOne, (startOne) + decks + 1):
+                                    player.battleMap[startNull - 1][q - 1] = "[O]"
+                            else:
+                                print("Корабль слишком близок к другому ! ")
+                                creatingShip(player, decks)
+
+
 
                         else:
-                            for q in range(endOne, (endOne)+decks+1):
-                                if player.battleMap[startNull-1][q-1] != "[O]":
-                                    player.battleMap[startNull-1][q-1] = "[O]"
-                                else:
-                                    print("Error! ")
+                            for q in range(endOne, (endOne) + decks + 1):
+                                if player.battleMap[startNull - 1][q - 1] == "[O]":
+                                    print("Эти координаты заняты! ")
+                                    creatingShip(player, decks)
+                                    break
+                            for q in range(endOne, (endOne) + decks + 1):
+                                player.battleMap[startNull - 1][q - 1] = "[O]"
 
                     else:
                         if result == -decks:
-                            for q in range(startNull, startNull + decks+1):
-                                if player.battleMap[q-1][startOne-1] != "[O]":
-                                    player.battleMap[q-1][startOne-1] = "[O]"
-                                else:
-                                    print("Error! ")
+                            for q in range(startNull, startNull + decks + 1):
+                                if player.battleMap[q - 1][startOne - 1] == "[O]":
+                                    print("Эти координаты заняты! ")
+                                    creatingShip(player, decks)
+                                    break
+                            for q in range(startNull, startNull + decks + 1):
+                                player.battleMap[q - 1][startOne - 1] = "[O]"
 
                         else:
-                            for q in range(endNull, endNull + decks+1):
-                                if player.battleMap[q-1][startOne-1] != "[O]":
-                                    player.battleMap[q-1][startOne-1] = "[O]"
-                                else:
-                                    print("Error! ")
+                            for q in range(endNull, endNull + decks + 1):
+                                if player.battleMap[q - 1][startOne - 1] == "[O]":
+                                    print("Эти координаты заняты! ")
+                                    creatingShip(player, decks)
+                                    break
+                            for q in range(endNull, endNull + decks + 1):
+                                player.battleMap[q - 1][startOne - 1] = "[O]"
 
                 else:
-                    print("Error! ")
+                    print("Вы неправильно ввели координаты ")
+                    creatingShip(player, decks)
+
 
             else:
-                print("Error! ")
-
+                print("Вы неправильно ввели координаты ")
+                creatingShip(player, decks)
 
 
         print("Нужно расставить пять короблей по полю:"
-              " 1 - четырех палубный , 2 - трех палубных, 2 - двух палубных ")
+              " 1 - четырех палубный , 1 - трех палубный, 2 - двух палубных ")
 
-        print("Начнем с четырех палубнуго")
+
+        print("Начнем с четырех-палубнуго корабля")
         creatingShip(self, 3)
-        print("Начнем с двух палубнуго")
+        print("Теперь разместите трех-палубный корабль")
+        creatingShip(self, 2)
+        print("Теперь разместите двух-палубный корабль")
+        creatingShip(self, 1)
+        print("Теперь разместите двух-палубный корабль")
         creatingShip(self, 1)
         for i in range(10):
             print(self.battleMap[i])
