@@ -140,20 +140,23 @@ class SeaMap:
     def creatingShipsAutomatically(self):
         def creatingShip(player, decks):
             # начало координат корабля
-            #self.battleMapBot[9][0] = "[O]"
-            choice = 1 #random.randint(1,2)
+            choice = random.randint(1, 2)
             bulinСheck = True
-            startNull =  random.randint(1,10)
-            startOne =  random.randint(1,10)
-            print(str(startNull)+" "+str(startOne)+" "+str(choice)+" "+str(decks))
+            startNull = random.randint(1, 10)
+            startOne = random.randint(1, 10)
+            print(str(startNull) + " " + str(startOne) + " " + str(choice) + " " + str(decks))
             if choice == 1:
                 # конец координат корабля
-                if startNull + decks < 11 and (decks == 3 or decks == 2 or decks == 1 or decks == 0) :
+                if startNull + decks < 11 and (decks == 3 or decks == 2 or decks == 1 or decks == 0):
                     for q in range(decks + 3):
                         try:
-                            if player.battleMapBot[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][startOne] == "[O]":
+                            if player.battleMapBot[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][
+                                startOne - 1] == "[O]" \
+                                    or player.battleMapBot[
+                                startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][
+                                startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
+                                    or player.battleMapBot[
+                                startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][startOne] == "[O]":
                                 bulinСheck = False
                                 creatingShip(player, decks)
                                 break
@@ -163,14 +166,15 @@ class SeaMap:
                         for q in range(decks + 1):
                             player.battleMapBot[startNull - 1 + q][startOne - 1] = "[O]"
 
-
-
-                elif startNull + decks > 0 and (decks == -3 or decks == -2 or decks == -1 ):
+                elif startNull + decks > 0 and (decks == -3 or decks == -2 or decks == -1):
                     for q in range((-decks) + 3):
                         try:
-                            if player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q+1][startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q+1][startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q+1][startOne] == "[O]":
+                            if player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                                startOne - 1] == "[O]" \
+                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                                startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
+                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                                startOne] == "[O]":
                                 bulinСheck = False
                                 creatingShip(player, decks)
                                 break
@@ -178,44 +182,56 @@ class SeaMap:
                             pass
                     if bulinСheck:
                         for q in range((-decks) + 1):
-                            player.battleMapBot[(startNull-1) - q][startOne - 1] = "[O]"
+                            player.battleMapBot[(startNull - 1) - q][startOne - 1] = "[O]"
                 else:
                     creatingShip(player, decks)
-            # else:
-            #     if startOne + decks < 10 and decks == 3:
-            #         for q in range(decks + 1):
-            #             if player.battleMapBot[startNull - 1][(startOne - 1) + q] == "[O]":
-            #                 creatingShip(player, decks)
-            #                 break
-            #         if shipsNearbyHorizontalPlus(player, startNull-1, startOne-1, decks):
-            #             for q in range(decks + 1):
-            #                 player.battleMapBot[startNull - 1][startOne - 1 + q] = "[O]"
-            #         else:
-            #             creatingShip(player, decks)
-            #     elif startOne + decks > 0 and decks == -3:
-            #         for q in range((-decks) + 1):
-            #             if player.battleMapBot[startNull - 1][(startOne - 1) - q] == "[O]":
-            #                 creatingShip(player, decks)
-            #                 break
-            #         if shipsNearbyHorizontalMinus(player, startNull - 1, startOne - 1, decks):
-            #             for q in range((-decks) + 1):
-            #                 player.battleMapBot[startNull - 1][startOne - 1 - q] = "[O]"
-            #         else:
-            #             creatingShip(player, decks)
-            #     else:
-            #         creatingShip(player, decks)
+            else:
+                if startOne + decks < 10 and (decks == 3 or decks == 2 or decks == 1 or decks == 0): #здесь баг
 
-        creatingShip(self, random.choice([-3,3]))
+                    for q in range(decks + 3):
+                        try:
+                            if player.battleMapBot[startNull - 1][
+                                startOne - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q] == "[O]" \
+                                    or player.battleMapBot[startNull - 2 if startNull - 2 != -1 else startNull - 1][
+                                startOne - 2 + q if startOne - 2 + q != -1 else startOne - 1 + q] == "[O]" \
+                                    or player.battleMapBot[startOne][
+                                startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q] == "[O]":
+                                bulinСheck = False
+                                creatingShip(player, decks)
+                                break
+                        except Exception:
+                            pass
+                    if bulinСheck:
+                        for q in range(decks + 1):
+                            player.battleMapBot[startNull - 1][startOne - 1 + q] = "[O]"
+
+                elif startOne + decks > 0 and (decks == -3 or decks == -2 or decks == -1 or decks == 0):
+
+                    for q in range((-decks) + 3):
+                        try:
+                            if player.battleMapBot[startNull - 1][
+                                startOne - q if startNull - q != -1 else startNull - 1 - q] == "[O]" \
+                                    or player.battleMapBot[startNull - 2 if startNull - 2 != -1 else startNull - 1][
+                                startOne - q if startOne - q != -1 else startOne - 1 - q] == "[O]" \
+                                    or player.battleMapBot[startNull if startNull != -1 else startNull - 1][
+                                startOne - q if startOne - q != -1 else startOne - 1 - q] == "[O]":
+                                bulinСheck = False
+                                creatingShip(player, decks)
+                                break
+                        except Exception:
+                            pass
+                    if bulinСheck:
+                        for q in range((-decks) + 1):
+                            player.battleMapBot[startNull - 1][startOne - 1 - q] = "[O]"
+                else:
+                    creatingShip(player, decks)
+
+        creatingShip(self, random.choice([-3, 3]))
         creatingShip(self, random.choice([-3, 3]))
         creatingShip(self, random.choice([-2, 2]))
         creatingShip(self, random.choice([-2, 2]))
         creatingShip(self, random.choice([-1, 1]))
         creatingShip(self, 0)
-
-
-
-
-        # random.choice([-3,3])
         for i in range(10):
             print(self.battleMapBot[i])
 
@@ -224,5 +240,3 @@ class SeaMap:
 
 
 a = SeaMap()
-
-
