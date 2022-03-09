@@ -6,8 +6,9 @@ class SeaMap:
     def __init__(self):
         self.battleMap = [["[ ]"] * 10 for i in range(10)]
         self.battleMapBot = [["[ ]"] * 10 for i in range(10)]
-        # self.creatingShipsMechanically()
-        self.creatingShipsAutomatically()
+        self.creatingShipsAutomatically(self.battleMapBot)
+        print("Как вы хотите создать карту?")
+        self.methodSelection()
 
     def shoot(self, row, col):
         check = self.battleMapBot[row][col]
@@ -26,6 +27,26 @@ class SeaMap:
             print("Вы ввели что то не так")
             print("Введите кординаты: ")
             self.shoot(int(input()), int(input()))
+
+    def methodSelection(self):
+        print("Если в ручную нажмите '1' ")
+        print("Если автоматически нажмите '2' ")
+        try:
+            choiceUser = int(input())
+        except Exception:
+            print("Вы ввели неверное значение! ")
+            print("Попробуйте еще раз")
+            self.methodSelection()
+        if choiceUser == 1:
+            self.creatingShipsMechanically()
+        elif choiceUser == 2:
+            self.creatingShipsAutomatically(self.battleMap)
+            for i in range(10):
+                print(self.battleMap[i])
+        else:
+            print("Вы ввели неверное значение! ")
+            print("Попробуйте еще раз")
+            self.methodSelection()
 
     def creatingShipsMechanically(self):
         def shipsNearbyHorizontal(player, row, col, decks):
@@ -128,112 +149,117 @@ class SeaMap:
 
         print("Начнем с четырех-палубнуго корабля")
         creatingShip(self, 3)
+        print("Расположите еще один четырех-палубный корабль")
+        creatingShip(self, 3)
         print("Теперь разместите трех-палубный корабль")
+        creatingShip(self, 2)
+        print("Расположите еще один трех-палубный корабль")
         creatingShip(self, 2)
         print("Теперь разместите двух-палубный корабль")
         creatingShip(self, 1)
-        print("Теперь разместите двух-палубный корабль")
+        print("Расположите еще один двух-палубный корабль")
         creatingShip(self, 1)
+        print("Теперь разместите один одно-палубный корабль")
+        creatingShip(self, 0)
         for i in range(10):
             print(self.battleMap[i])
 
-    def creatingShipsAutomatically(self):
-        def creatingShip(player, decks):
+    def creatingShipsAutomatically(self, map):
+        def creatingShip(decks):
             # начало координат корабля
+            # map[4][7]="[O]"
             choice = random.randint(1, 2)
             bulinСheck = True
             startNull = random.randint(1, 10)
             startOne = random.randint(1, 10)
-            print(str(startNull) + " " + str(startOne) + " " + str(choice) + " " + str(decks))
             if choice == 1:
                 # конец координат корабля
                 if startNull + decks < 11 and (decks == 3 or decks == 2 or decks == 1 or decks == 0):
                     for q in range(decks + 3):
                         try:
-                            if player.battleMapBot[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][
+                            if map[startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][
                                 startOne - 1] == "[O]" \
-                                    or player.battleMapBot[
+                                    or map[
                                 startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][
                                 startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
-                                    or player.battleMapBot[
+                                    or map[
                                 startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q][startOne] == "[O]":
                                 bulinСheck = False
-                                creatingShip(player, decks)
+                                creatingShip(decks)
                                 break
                         except Exception:
                             pass
                     if bulinСheck:
                         for q in range(decks + 1):
-                            player.battleMapBot[startNull - 1 + q][startOne - 1] = "[O]"
+                            map[startNull - 1 + q][startOne - 1] = "[O]"
 
                 elif startNull + decks > 0 and (decks == -3 or decks == -2 or decks == -1):
                     for q in range((-decks) + 3):
                         try:
-                            if player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                            if map[startNull - q if startNull - q != -1 else startNull - q + 1][
                                 startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                                    or map[startNull - q if startNull - q != -1 else startNull - q + 1][
                                 startOne - 2 if startOne - 2 != -1 else startOne - 1] == "[O]" \
-                                    or player.battleMapBot[startNull - q if startNull - q != -1 else startNull - q + 1][
+                                    or map[startNull - q if startNull - q != -1 else startNull - q + 1][
                                 startOne] == "[O]":
                                 bulinСheck = False
-                                creatingShip(player, decks)
+                                creatingShip(decks)
                                 break
                         except Exception:
                             pass
                     if bulinСheck:
                         for q in range((-decks) + 1):
-                            player.battleMapBot[(startNull - 1) - q][startOne - 1] = "[O]"
+                            map[(startNull - 1) - q][startOne - 1] = "[O]"
                 else:
-                    creatingShip(player, decks)
+                    creatingShip(decks)
             else:
-                if startOne + decks < 10 and (decks == 3 or decks == 2 or decks == 1 or decks == 0): #здесь баг
+                if startOne + decks < 10 and (decks == 3 or decks == 2 or decks == 1 or decks == 0):  # здесь баг
 
                     for q in range(decks + 3):
                         try:
-                            if player.battleMapBot[startNull - 1][
+                            if map[startNull - 1][
                                 startOne - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q] == "[O]" \
-                                    or player.battleMapBot[startNull - 2 if startNull - 2 != -1 else startNull - 1][
+                                    or map[startNull - 2 if startNull - 2 != -1 else startNull - 1][
                                 startOne - 2 + q if startOne - 2 + q != -1 else startOne - 1 + q] == "[O]" \
-                                    or player.battleMapBot[startOne][
-                                startNull - 2 + q if startNull - 2 + q != -1 else startNull - 1 + q] == "[O]":
+                                    or map[startNull if startNull != -1 else startNull + 1][
+                                startOne - 2 + q if startOne - 2 + q != -1 else startOne - 1 + q] == "[O]":
                                 bulinСheck = False
-                                creatingShip(player, decks)
+                                creatingShip(decks)
                                 break
                         except Exception:
                             pass
                     if bulinСheck:
                         for q in range(decks + 1):
-                            player.battleMapBot[startNull - 1][startOne - 1 + q] = "[O]"
+                            map[startNull - 1][startOne - 1 + q] = "[O]"
 
                 elif startOne + decks > 0 and (decks == -3 or decks == -2 or decks == -1 or decks == 0):
 
                     for q in range((-decks) + 3):
                         try:
-                            if player.battleMapBot[startNull - 1][
+                            if map[startNull - 1][
                                 startOne - q if startNull - q != -1 else startNull - 1 - q] == "[O]" \
-                                    or player.battleMapBot[startNull - 2 if startNull - 2 != -1 else startNull - 1][
+                                    or map[startNull - 2 if startNull - 2 != -1 else startNull - 1][
                                 startOne - q if startOne - q != -1 else startOne - 1 - q] == "[O]" \
-                                    or player.battleMapBot[startNull if startNull != -1 else startNull - 1][
+                                    or map[startNull if startNull != -1 else startNull - 1][
                                 startOne - q if startOne - q != -1 else startOne - 1 - q] == "[O]":
                                 bulinСheck = False
-                                creatingShip(player, decks)
+                                creatingShip(decks)
                                 break
                         except Exception:
                             pass
                     if bulinСheck:
                         for q in range((-decks) + 1):
-                            player.battleMapBot[startNull - 1][startOne - 1 - q] = "[O]"
+                            map[startNull - 1][startOne - 1 - q] = "[O]"
                 else:
-                    creatingShip(player, decks)
+                    creatingShip(decks)
 
-        creatingShip(self, random.choice([-3, 3]))
-        creatingShip(self, random.choice([-3, 3]))
-        creatingShip(self, random.choice([-2, 2]))
-        creatingShip(self, random.choice([-2, 2]))
-        creatingShip(self, random.choice([-1, 1]))
-        creatingShip(self, 0)
-        for i in range(10):
-            print(self.battleMapBot[i])
+        creatingShip(random.choice([-3, 3]))
+        creatingShip(random.choice([-3, 3]))
+        creatingShip(random.choice([-2, 2]))
+        creatingShip(random.choice([-2, 2]))
+        creatingShip(random.choice([-1, 1]))
+        creatingShip(random.choice([-1, 1]))
+        creatingShip(0)
 
     # def artificialIntelligence(self):
     #     pass
