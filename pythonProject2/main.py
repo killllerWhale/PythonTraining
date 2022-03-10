@@ -6,9 +6,12 @@ class SeaMap:
     def __init__(self):
         self.battleMap = [["[ ]"] * 10 for i in range(10)]
         self.battleMapBot = [["[ ]"] * 10 for i in range(10)]
-        self.creatingShipsAutomatically(self.battleMapBot)
-        print("Как вы хотите создать карту?")
-        self.methodSelection()
+        self.botMemory = ""
+        self.botMemoryCoordinatesNull
+        self.botMemoryCoordinatesOne
+        # self.creatingShipsAutomatically(self.battleMapBot)
+        # print("Как вы хотите создать карту?")
+        # self.methodSelection()
 
     def shoot(self, row, col):
         check = self.battleMapBot[row][col]
@@ -261,8 +264,184 @@ class SeaMap:
         creatingShip(random.choice([-1, 1]))
         creatingShip(0)
 
-    # def artificialIntelligence(self):
-    #     pass
+    def artificialIntelligence(self):
+        hitNullNull = 0
+        hitOneOne = 0
+
+        def dotsAroundShips(tapy, tapyNullX, tapyOneX):
+            if tapy == "x+":
+                while True:
+                    if self.battleMapBot[hitNullNull][hitOneOne] != "[O]" or self.battleMapBot[hitNull][
+                        hitOne] != "[x]" or (hitOne) != -1:
+                        self.battleMapBot[hitNullNull][hitOneOne - 1] = "[*]"
+                        self.battleMapBot[hitNullNull - 1][hitOneOne - 1] = "[*]"
+                        self.battleMapBot[hitNullNull + 1][hitOneOne - 1] = "[*]"
+                        if self.battleMapBot[hitNullNull][hitOneOne] == "[x]":
+                            self.battleMapBot[hitNullNull - 1][hitOneOne] = "[*]"
+                            self.battleMapBot[hitNullNull + 1][hitOneOne] = "[*]"
+                            if self.battleMapBot[hitNullNull][hitOneOne + 1] == "[x]":
+                                self.battleMapBot[hitNullNull - 1][hitOneOne + 1] = "[*]"
+                                self.battleMapBot[hitNullNull + 1][hitOneOne + 1] = "[*]"
+                                if self.battleMapBot[hitNullNull][hitOneOne + 2] == "[x]":
+                                    self.battleMapBot[hitNullNull - 1][hitOneOne + 2] = "[*]"
+                                    self.battleMapBot[hitNullNull + 1][hitOneOne + 2] = "[*]"
+                                    if self.battleMapBot[hitNullNull][hitOneOne + 3] == "[x]":
+                                        self.battleMapBot[hitNullNull - 1][hitOneOne + 3] = "[*]"
+                                        self.battleMapBot[hitNullNull + 1][hitOneOne + 3] = "[*]"
+                                        self.battleMapBot[hitNullNull - 1][hitOneOne + 4] = "[*]"
+                                        self.battleMapBot[hitNullNull + 1][hitOneOne + 4] = "[*]"
+                                        self.battleMapBot[hitNullNull][hitOneOne + 4] = "[*]"
+                                    else:
+                                        self.battleMapBot[hitNullNull - 1][hitOneOne + 3] = "[*]"
+                                        self.battleMapBot[hitNullNull + 1][hitOneOne + 3] = "[*]"
+                                        self.battleMapBot[hitNullNull][hitOneOne + 3] = "[*]"
+                                else:
+                                    self.battleMapBot[hitNullNull - 1][hitOneOne + 2] = "[*]"
+                                    self.battleMapBot[hitNullNull + 1][hitOneOne + 2] = "[*]"
+                                    self.battleMapBot[hitNullNull][hitOneOne + 2] = "[*]"
+                            else:
+                                self.battleMapBot[hitNullNull - 1][hitOneOne + 1] = "[*]"
+                                self.battleMapBot[hitNullNull + 1][hitOneOne + 1] = "[*]"
+                                self.battleMapBot[hitNullNull][hitOneOne + 1] = "[*]"
+
+                    break
+            elif tapy == "x-":
+                while True:
+                    if self.battleMapBot[tapyNullX][tapyOneX] != "[O]" or self.battleMapBot[tapyNullX][
+                        tapyOneX] != "[x]" or (tapyOneX) != -1:
+                        self.battleMapBot[tapyNullX][tapyOneX - 1] = "[*]"
+                        self.battleMapBot[tapyNullX - 1][tapyOneX - 1] = "[*]"
+                        self.battleMapBot[tapyNullX + 1][tapyOneX - 1] = "[*]"
+                        if self.battleMapBot[tapyNullX][tapyOneX] == "[x]":
+                            self.battleMapBot[tapyNullX - 1][tapyOneX] = "[*]"
+                            self.battleMapBot[tapyNullX + 1][tapyOneX] = "[*]"
+                            if self.battleMapBot[tapyNullX][tapyOneX + 1] == "[x]":
+                                self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                if self.battleMapBot[tapyNullX][tapyOneX + 2] == "[x]":
+                                    self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                    self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                    if self.battleMapBot[tapyNullX][tapyOneX + 3] == "[x]":
+                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 4] = "[*]"
+                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 4] = "[*]"
+                                        self.battleMapBot[tapyNullX][tapyOneX + 4] = "[*]"
+                                    else:
+                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                        self.battleMapBot[tapyNullX][tapyOneX + 3] = "[*]"
+                                else:
+                                    self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                    self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                    self.battleMapBot[tapyNullX][tapyOneX + 2] = "[*]"
+                            else:
+                                self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                self.battleMapBot[tapyNullX][tapyOneX + 1] = "[*]"
+
+                    break
+
+        def directionAlgorithm(hitNull, hitOne, direction):
+            if direction == "horizontal+":
+                if self.battleMapBot[hitNull][hitOne + 1] != "[*]" or self.battleMapBot[hitNull][
+                    hitOne + 1] != "[x]" or (hitOne + 1) != 10:
+                    if self.battleMapBot[hitNull][hitOne + 1] == "[O]":
+                        self.battleMapBot[hitNull][hitOne + 1] = "[x]"
+                        directionAlgorithm(hitNull, hitOne + 1, "horizontal+")
+                        # проходит и уничтожает до конца
+                    else:
+                        if self.battleMapBot[hitNullNull][hitOneOne - 1] == "[ ]" or self.battleMapBot[hitNullNull][
+                            hitOneOne - 1] == "[*]" or (hitOneOne - 1) == -1:
+                            # проверяет уничтожен корабль или нет
+                            print("Бот уничтожил твой корабль! ")
+                            # передаем в метод для раставления точек
+                            dotsAroundShips("x+", hitNullNull, hitOneOne)
+                            return True
+                        else:
+                            self.battleMapBot[hitNull][hitOne + 1] = "[*]"
+                            return False
+            elif direction == "horizontal-":
+                if self.battleMapBot[hitNull][hitOne - 1] != "[*]" or self.battleMapBot[hitNull][
+                    hitOne - 1] != "[x]" or (hitOne - 1) != -1:
+                    if self.battleMapBot[hitNull][hitOne - 1] == "[O]":
+                        self.battleMapBot[hitNull][hitOne - 1] = "[x]"
+                        directionAlgorithm(hitNull, hitOne - 1, "horizontal-")
+                        # проходит и уничтожает до конца
+                    else:
+                        if self.battleMapBot[hitNullNull][hitOneOne + 1] == "[ ]" or self.battleMapBot[hitNullNull][
+                            hitOneOne + 1] == "[*]" or (hitOneOne + 1) == 10:
+                            # проверяет уничтожен корабль или нет
+                            print("Бот уничтожил твой корабль! ")
+                            # передаем в метод для раставления точек
+                            dotsAroundShips("x-", hitNull, hitOne)
+                            return True
+                        else:
+                            self.battleMapBot[hitNull][hitOne - 1] = "[*]"
+                            return False
+
+        def demolitionAlgorithm(hitNull, hitOne):
+            # проверяем направление в x+
+            if (self.battleMapBot[hitNull][hitOne + 1] != "[*]" or self.battleMapBot[hitNull][hitOne + 1] != "[x]" or (hitOne + 1) != 10) \
+                    and (self.botMemory == "x+" or self.botMemory == ""):
+                if self.battleMapBot[hitNull][hitOne + 1] == "[O]":
+                    self.battleMapBot[hitNull][hitOne + 1] = "[x]"
+                    # направление подтвердилось проверяем дальше
+                    if directionAlgorithm(hitNull, hitOne + 1, "horizontal+") == True:
+                        self.botMemory = ""
+                        return True
+                    else:
+                        self.botMemory = "x-"
+                        return False
+
+                else:
+                    self.battleMapBot[hitNull][hitOne + 1] = "[*]"
+                    return False
+            # проверяем направление в x-
+            if (self.battleMapBot[hitNull][hitOne - 1] != "[*]" or self.battleMapBot[hitNull][hitOne - 1] != "[x]" or (hitOne - 1) != -1) \
+                    and (self.botMemory == "x-" or self.botMemory == ""):
+                if self.battleMapBot[hitNull][hitOne - 1] == "[O]":
+                    self.battleMapBot[hitNull][hitOne - 1] = "[x]"
+                    # направление подтвердилось проверяем дальше
+                    if directionAlgorithm(hitNull, hitOne - 1, "horizontal-") == True:
+                        self.botMemory = ""
+                        return True
+                    else:
+                        self.botMemory = "x+"
+                        return False
+                else:
+                    self.battleMapBot[hitNull][hitOne - 1] = "[*]"
+                    return False
+
+        self.battleMapBot[1][1] = "[O]"
+        self.battleMapBot[1][2] = "[O]"
+        self.battleMapBot[1][3] = "[O]"
+
+#дописать координаты бота памяти !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if self.
+        hitNull = 1  # random.randint(0,9)
+        hitOne = 2  # random.randint(0,9)
+        if self.battleMapBot[hitNull][hitOne] == "[ ]":
+            self.battleMapBot[hitNull][hitOne] = "[*]"
+            return False
+            # промазал
+        else:
+            if self.battleMapBot[hitNull][hitOne] == "[*]":
+                self.artificialIntelligence()
+                # не трогать
+            else:
+                # попал
+                self.battleMapBot[hitNull][hitOne] = "[x]"
+                # обозначить
+                hitNullNull = hitNull
+                hitOneOne = hitOne
+                # запомнить
+                demolitionAlgorithm(hitNull, hitOne)
+                # передать для определения направления
+
+            for i in range(10):
+                print(self.battleMapBot[i])
 
 
 a = SeaMap()
+a.artificialIntelligence()
