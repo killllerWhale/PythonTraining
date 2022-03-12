@@ -20,60 +20,83 @@ class SeaMap:
                     if tapyOneX - 1 != -1:
                         if tapyNullX - 1 != -1:
                             self.battleMapBot[tapyNullX - 1][tapyOneX - 1] = "[*]"
+                            self.battleMapBot_view[tapyNullX - 1][tapyOneX - 1] = "[*]"
                         if tapyNullX + 1 != 10:
                             self.battleMapBot[tapyNullX + 1][tapyOneX - 1] = "[*]"
+                            self.battleMapBot_view[tapyNullX + 1][tapyOneX - 1] = "[*]"
                         self.battleMapBot[tapyNullX][tapyOneX - 1] = "[*]"
+                        self.battleMapBot_view[tapyNullX][tapyOneX - 1] = "[*]"
                     if self.battleMapBot[tapyNullX][tapyOneX] == "[x]":
                         if tapyNullX - 1 != -1:
                             self.battleMapBot[tapyNullX - 1][tapyOneX] = "[*]"
+                            self.battleMapBot_view[tapyNullX - 1][tapyOneX] = "[*]"
                         if tapyNullX + 1 != 10:
                             self.battleMapBot[tapyNullX + 1][tapyOneX] = "[*]"
+                            self.battleMapBot_view[tapyNullX + 1][tapyOneX] = "[*]"
                         if tapyOneX + 1 != 10:
                             if self.battleMapBot[tapyNullX][tapyOneX + 1] == "[x]":
                                 if tapyNullX - 1 != -1:
                                     self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 1] = "[*]"
                                 if tapyNullX + 1 != 10:
                                     self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 1] = "[*]"
                                 if tapyOneX + 2 != 10:
                                     if self.battleMapBot[tapyNullX][tapyOneX + 2] == "[x]":
                                         if tapyNullX - 1 != -1:
                                             self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
                                         if tapyNullX + 1 != 10:
                                             self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
                                         if tapyOneX + 3 != 10:
                                             if self.battleMapBot[tapyNullX][tapyOneX + 3] == "[x]":
                                                 if tapyNullX - 1 != -1:
                                                     self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
                                                 if tapyNullX + 1 != 10:
                                                     self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
                                                 if tapyOneX + 4 != 10:
                                                     if tapyNullX - 1 != -1:
                                                         self.battleMapBot[tapyNullX - 1][tapyOneX + 4] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX - 1][tapyOneX + 4] = "[*]"
                                                     if tapyNullX + 1 != 10:
                                                         self.battleMapBot[tapyNullX + 1][tapyOneX + 4] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX + 1][tapyOneX + 4] = "[*]"
                                                     self.battleMapBot[tapyNullX][tapyOneX + 4] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX][tapyOneX + 4] = "[*]"
                                             else:
                                                 if tapyNullX - 1 != -1:
                                                     self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
                                                 if tapyNullX + 1 != 10:
                                                     self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
                                                 self.battleMapBot[tapyNullX][tapyOneX + 3] = "[*]"
+                                                self.battleMapBot_view[tapyNullX][tapyOneX + 3] = "[*]"
                                     else:
                                         if tapyNullX - 1 != -1:
                                             self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
                                         if tapyNullX + 1 != 10:
                                             self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
                                         self.battleMapBot[tapyNullX][tapyOneX + 2] = "[*]"
+                                        self.battleMapBot_view[tapyNullX][tapyOneX + 2] = "[*]"
 
                             else:
                                 if tapyNullX - 1 != -1:
                                     if tapyOneX + 1 != 10:
                                         self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                        self.battleMapBot_view[tapyNullX - 1][tapyOneX + 1] = "[*]"
                                 if tapyNullX + 1 != 10:
                                     if tapyOneX + 1 != 10:
                                         self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                        self.battleMapBot_view[tapyNullX + 1][tapyOneX + 1] = "[*]"
                                 if tapyOneX + 1 != 10:
                                     self.battleMapBot[tapyNullX][tapyOneX + 1] = "[*]"
+                                    self.battleMapBot_view[tapyNullX][tapyOneX + 1] = "[*]"
 
         def cheekShoot(hitNull, hitOne):
             # проверяем однопалубный корабль у границы
@@ -159,11 +182,6 @@ class SeaMap:
                     break
                 if result == True:
                     break
-
-
-
-
-
 
         check = self.battleMapBot[row][col]
         if check == "[x]" or check == "[*]":
@@ -787,8 +805,6 @@ class SeaMap:
                 print(self.battleMap[i])
             time.sleep(2)
             print("Ваш ход!"+"\n")
-
-
 
 a = SeaMap()
 a.start_game()
