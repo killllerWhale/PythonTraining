@@ -109,7 +109,7 @@ class SeaMap:
                         hitOne] != "[x]"):
                         # отправляем в точки
                         print("\nВы уничтожили корабль!")
-                        dotsAroundShips("x+",hitNull,hitOne)
+                        dotsAroundShips("x+", hitNull, hitOne)
                 # проверяем однопалубный корабль у двух границ
                 if hitNull - 1 == -1:
                     if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
@@ -131,7 +131,7 @@ class SeaMap:
                     dotsAroundShips("x+", hitNull, hitOne)
 
             # проверяем однопалубный корабль в поле
-            if hitOne + 1 != 10 and hitOne - 1 != -1:
+            elif hitOne + 1 != 10 and hitOne - 1 != -1:
                 if (self.battleMapBot[hitNull][hitOne + 1] != "[O]" and self.battleMapBot[hitNull][
                     hitOne + 1] != "[x]") \
                         and (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
@@ -145,27 +145,29 @@ class SeaMap:
                     dotsAroundShips("x+", hitNull, hitOne)
 
             # проверяем корабль от 1 до 4 палуб
-            for i in range (1, 5):
+            for i in range(1, 5):
                 result = False
-                if hitOne + i == 10:
+                if hitOne + 1 == 10:
                     for i1 in range(1, 5):
                         if self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
                                 or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
                             # отправляем в точки
                             print("\nВы уничтожили корабль!")
-                            dotsAroundShips("x+", hitNull, hitOne-i1+1)
+                            dotsAroundShips("x+", hitNull, hitOne - i1 + 1)
+                            print("1")
                             result = True
                             break
-                        elif self.battleMapBot[hitNull][hitOne - i] == "[O]":
+                        elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
                             result = True
                             break
                 elif self.battleMapBot[hitNull][hitOne + i] == "[*]" \
                         or self.battleMapBot[hitNull][hitOne + i] == "[ ]":
                     for i1 in range(1, 5):
-                        if hitOne - i1 == 0:
+                        if hitOne - 1 == -1:
                             # отправляем в точки
                             print("\nВы уничтожили корабль!")
                             dotsAroundShips("x+", hitNull, hitOne - i1)
+                            print("2")
                             result = True
                             break
                         elif self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
@@ -173,9 +175,10 @@ class SeaMap:
                             # отправляем в точки
                             print("\nВы уничтожили корабль!")
                             dotsAroundShips("x+", hitNull, hitOne - i1 + 1)
+                            print("3")
                             result = True
                             break
-                        elif self.battleMapBot[hitNull][hitOne - i] == "[O]":
+                        elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
                             result = True
                             break
                 elif self.battleMapBot[hitNull][hitOne + i] == "[O]":
@@ -196,7 +199,7 @@ class SeaMap:
             print("Вы попали!")
             self.battleMapBot[row][col] = "[x]"
             self.battleMapBot_view[row][col] = "[x]"
-            cheekShoot(row,col)
+            cheekShoot(row, col)
             return True
         else:
             print("Вы ввели что то не так")
@@ -204,7 +207,7 @@ class SeaMap:
 
     def methodSelection(self):
         print("Если в ручную нажмите '1' ")
-        print("Если автоматически нажмите '2' ")
+        print("Если автоматически нажмите '2'\n: ")
         try:
             choiceUser = int(input())
         except Exception:
@@ -508,7 +511,7 @@ class SeaMap:
             if tapy == "hitOne+":
                 if self.battleMap[hitNull][hitOne + 1] == "[x]":
                     if self.battleMap[hitNull][hitOne + 2] == "[x]":
-                        if hitOne+3 != 10:
+                        if hitOne + 3 != 10:
                             if self.battleMap[hitNull][hitOne + 3] == "[x]":
                                 if hitOne + 4 == 10:
                                     print("Бот уничтожил твой корабль! ")
@@ -582,6 +585,8 @@ class SeaMap:
                 if self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][
                     hitOne + 1] != "[x]":
                     if self.battleMap[hitNull][hitOne + 1] == "[O]":
+                        time.sleep(1)
+                        print("Бот попал !")
                         self.battleMap[hitNull][hitOne + 1] = "[x]"
                         directionAlgorithm(hitNull, hitOne + 1, "horizontal+")
                         # проходит и уничтожает до конца
@@ -595,6 +600,8 @@ class SeaMap:
                             self.botMemory = ""
                             return True
                         else:
+                            time.sleep(1)
+                            print("Бот промазал !")
                             self.battleMap[hitNull][hitOne + 1] = "[*]"
                             self.botMemory = "x-"
                             self.botMemoryCoordinatesNull = hitNullNull
@@ -605,6 +612,8 @@ class SeaMap:
                 if self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
                     hitOne - 1] != "[x]" or (hitOne - 1) != -1:
                     if self.battleMap[hitNull][hitOne - 1] == "[O]":
+                        time.sleep(1)
+                        print("Бот попал !")
                         self.battleMap[hitNull][hitOne - 1] = "[x]"
                         directionAlgorithm(hitNull, hitOne - 1, "horizontal-")
                         # проходит и уничтожает до конца
@@ -613,6 +622,8 @@ class SeaMap:
                             self.botMemory = ""
                             return True
                         else:
+                            time.sleep(1)
+                            print("Бот промазал !")
                             self.battleMap[hitNull][hitOne - 1] = "[*]"
                             self.botMemory = "x+"
                             return False
@@ -655,12 +666,16 @@ class SeaMap:
                     hitOne - 1] != "[x]") \
                         and (self.botMemory == "x-" or self.botMemory == ""):
                     if self.battleMap[hitNull][hitOne - 1] == "[O]":
+                        time.sleep(1)
+                        print("Бот попал !")
                         self.battleMap[hitNull][hitOne - 1] = "[x]"
                         # направление подтвердилось проверяем дальше
                         if directionAlgorithm(hitNull, hitOne - 1, "horizontal-") == True:
                             return True
 
                     else:
+                        time.sleep(1)
+                        print("Бот промазал !")
                         self.battleMap[hitNull][hitOne - 1] = "[*]"
                         self.botMemoryCoordinatesNull = hitNull
                         self.botMemoryCoordinatesOne = hitOne
@@ -671,6 +686,8 @@ class SeaMap:
                 if (self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][hitOne + 1] != "[x]") \
                         and (self.botMemory == "x+" or self.botMemory == ""):
                     if self.battleMap[hitNull][hitOne + 1] == "[O]":
+                        time.sleep(1)
+                        print("Бот попал !")
                         self.battleMap[hitNull][hitOne + 1] = "[x]"
                         # направление подтвердилось проверяем дальше
                         if directionAlgorithm(hitNull, hitOne + 1, "horizontal+") == True:
@@ -678,31 +695,34 @@ class SeaMap:
 
                     else:
                         self.battleMap[hitNull][hitOne + 1] = "[*]"
+                        time.sleep(1)
+                        print("Бот промазал !")
                         self.botMemoryCoordinatesNull = hitNull
                         self.botMemoryCoordinatesOne = hitOne
                         return False
 
             # проверяем однопалубный корабль в поле
-            elif (self.battleMap[hitNull][hitOne + 1] != "[O]" and self.battleMap[hitNull][
-                hitOne + 1] != "[x]") \
-                    and (self.battleMap[hitNull][hitOne - 1] != "[O]" and self.battleMap[hitNull][
-                hitOne - 1] != "[x]") \
-                    and (self.battleMap[hitNull + 1][hitOne] != "[O]" and self.battleMap[hitNull + 1][
-                hitOne] != "[x]") \
-                    and (self.battleMap[hitNull - 1][hitOne] != "[O]" and self.battleMap[hitNull - 1][
-                hitOne] != "[x]"):
-                if directionAlgorithm(hitNull, hitOne, "horizontal+") == True:
-                    self.botMemory = ""
-                    return True
-            # проверяем направление в x+
-            elif (self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][hitOne + 1] != "[x]") \
-                    and (self.botMemory == "x+" or self.botMemory == ""):
-                directionAlgorithm(hitNull, hitOne, "horizontal+")
-            # проверяем направление в x-
-            elif (self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
-                hitOne - 1] != "[x]") \
-                    and (self.botMemory == "x-" or self.botMemory == ""):
-                directionAlgorithm(hitNull, hitOne, "horizontal-")
+            if hitOne + 1 != 10 and hitOne - 1 != -1:
+                if (self.battleMap[hitNull][hitOne + 1] != "[O]" and self.battleMap[hitNull][
+                    hitOne + 1] != "[x]") \
+                        and (self.battleMap[hitNull][hitOne - 1] != "[O]" and self.battleMap[hitNull][
+                    hitOne - 1] != "[x]") \
+                        and (self.battleMap[hitNull + 1][hitOne] != "[O]" and self.battleMap[hitNull + 1][
+                    hitOne] != "[x]") \
+                        and (self.battleMap[hitNull - 1][hitOne] != "[O]" and self.battleMap[hitNull - 1][
+                    hitOne] != "[x]"):
+                    if directionAlgorithm(hitNull, hitOne, "horizontal+") == True:
+                        self.botMemory = ""
+                        return True
+                # проверяем направление в x+
+                elif (self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][hitOne + 1] != "[x]") \
+                        and (self.botMemory == "x+" or self.botMemory == ""):
+                    directionAlgorithm(hitNull, hitOne, "horizontal+")
+                # проверяем направление в x-
+                elif (self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
+                    hitOne - 1] != "[x]") \
+                        and (self.botMemory == "x-" or self.botMemory == ""):
+                    directionAlgorithm(hitNull, hitOne, "horizontal-")
 
         if self.botMemory != "":
             if self.botMemory == "x+":
@@ -716,6 +736,8 @@ class SeaMap:
             try:
                 hitNull = random.randint(0, 9)
                 hitOne = random.randint(0, 9)
+                self.battleMap[6][3] = "[O]"
+                self.battleMap[6][4] = "[O]"
 
             except Exception:
                 hitNull = 0
@@ -737,7 +759,7 @@ class SeaMap:
         if self.battleMap[hitNull][hitOne] == "[ ]":
             self.battleMap[hitNull][hitOne] = "[*]"
             print("Бот промазал !")
-            time.sleep(3)
+            time.sleep(1)
             return False
             # промазал
         else:
@@ -748,7 +770,7 @@ class SeaMap:
                 # попал
                 self.battleMap[hitNull][hitOne] = "[x]"
                 print("Бот попал !")
-                time.sleep(3)
+                time.sleep(1)
                 # обозначить
                 hitNullNull = hitNull
                 hitOneOne = hitOne
@@ -762,14 +784,14 @@ class SeaMap:
         print("Добропожаловать в")
         print(
             "------------------------------------------------------------МОРСКОЙ БОЙ------------------------------------------------------------")
-        time.sleep(5)
+        time.sleep(2)
         print("\nДавайте начнем игру!")
         time.sleep(1)
         self.creatingShipsAutomatically(self.battleMapBot)
         print("\nКак вы хотите создать карту?")
         self.methodSelection()
-        time.sleep(4)
-        print("\n\n\n\n\n\n")
+        time.sleep(2)
+        print("\n\n")
         print("\nБот готов надрать вам задницу "
               "\nТак давайте же приступим к сражению!!!!!!!!!!!!!!")
         time.sleep(2)
@@ -781,7 +803,7 @@ class SeaMap:
             print("\n\n\n")
             for i in range(10):
                 print(self.battleMapBot_view[i])
-            print("\nВведите кординаты для пушечного залпа:\n ")
+            print("\nВведите координаты для пушечного залпа:\n(координаты через пробел)\n\n ")
             enter_user = input().split()
             if enter_user[0] == "end":
                 break
@@ -789,22 +811,24 @@ class SeaMap:
                     or (int(enter_user[1]) < 1 or int(enter_user[1]) > 10):
                 print("Вы ввели неверные координаты! Попробуйте еще раз:\n")
                 continue
-            row = int(enter_user[0])
-            col = int(enter_user[1])
-            if self.shoot(row - 1, col - 1):
+            row = int(enter_user[0]) - 1
+            col = int(enter_user[1]) - 1
+            if self.shoot(row, col):
                 print("\n")
                 for i in range(10):
                     print(self.battleMapBot_view[i])
                 time.sleep(2)
                 continue
             print("Теперь атакует Бот")
-            print("\n\n\n\n\n\n")
-            time.sleep(1)
+            print("\n")
             self.artificialIntelligence()
             for i in range(10):
                 print(self.battleMap[i])
-            time.sleep(2)
-            print("Ваш ход!"+"\n")
+            time.sleep(4)
+            print("Ваш ход!" + "\n")
+
 
 a = SeaMap()
 a.start_game()
+
+
