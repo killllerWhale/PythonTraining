@@ -1,6 +1,6 @@
+import os
 import random
 import time
-
 
 class SeaMap:
 
@@ -218,9 +218,10 @@ class SeaMap:
             self.creatingShipsMechanically()
         elif choiceUser == 2:
             self.creatingShipsAutomatically(self.battleMap)
-            for i in range(10):
-                print(self.battleMap[i])
-            print("\n                       Отлично вот ваша карта! ")
+            print("Карта создана !")
+            print("\nБот готов надрать вам задницу "
+                  "\nТак давайте же приступим к сражению!!!!!!!!!!!!!!")
+
         else:
             print("Вы ввели неверное значение! ")
             print("Попробуйте еще раз")
@@ -790,45 +791,28 @@ class SeaMap:
         self.creatingShipsAutomatically(self.battleMapBot)
         print("\nКак вы хотите создать карту?")
         self.methodSelection()
-        time.sleep(2)
-        print("\n\n")
-        print("\nБот готов надрать вам задницу "
-              "\nТак давайте же приступим к сражению!!!!!!!!!!!!!!")
-        time.sleep(2)
-        print("\n\nДля выхода введите 'end'")
-        time.sleep(2)
-        print("\n\n\n\n\n\n\n")
-
-        while True:
-            print("\n\n\n")
-            for i in range(10):
-                print(self.battleMapBot_view[i])
-            print("\nВведите координаты для пушечного залпа:\n(координаты через пробел)\n\n ")
-            enter_user = input().split()
-            if enter_user[0] == "end":
-                break
-            if len(enter_user) != 2 or (int(enter_user[0]) < 1 or int(enter_user[0]) > 10) \
-                    or (int(enter_user[1]) < 1 or int(enter_user[1]) > 10):
-                print("Вы ввели неверные координаты! Попробуйте еще раз:\n")
-                continue
-            row = int(enter_user[0]) - 1
-            col = int(enter_user[1]) - 1
-            if self.shoot(row, col):
-                print("\n")
-                for i in range(10):
-                    print(self.battleMapBot_view[i])
-                time.sleep(2)
-                continue
-            print("Теперь атакует Бот")
-            print("\n")
-            self.artificialIntelligence()
-            for i in range(10):
-                print(self.battleMap[i])
-            time.sleep(4)
-            print("Ваш ход!" + "\n")
 
 
-a = SeaMap()
-a.start_game()
+
+        # while True:
+        #
+        #
+        #
+        #     if self.shoot(row, col):
+        #         print("\n")
+        #         for i in range(10):
+        #             print(self.battleMapBot_view[i])
+        #         time.sleep(2)
+        #         continue
+        #     print("Теперь атакует Бот")
+        #     print("\n")
+        #     self.artificialIntelligence()
+        #     for i in range(10):
+        #         print(self.battleMap[i])
+        #     time.sleep(4)
+        #     print("Ваш ход!" + "\n")
+
+
+
 
 
