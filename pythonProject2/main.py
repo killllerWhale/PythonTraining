@@ -1,6 +1,6 @@
-import sea_battle_map
 import random
 import time
+import traceback
 
 
 class SeaMap:
@@ -14,264 +14,276 @@ class SeaMap:
         self.botMemoryCoordinatesOne = 0
         self.gameMapOne = gameMap
 
-    def shoot(self, row, col, self_game_map):
-        def dotsAroundShips(tapy, tapyNullX, tapyOneX, one, two):
-            if tapy == "x+":
-                if self.battleMapBot[tapyNullX][tapyOneX] != "[O]" or self.battleMapBot[tapyNullX][
-                    tapyOneX] != "[x]":
-                    if tapyOneX - 1 != -1:
-                        if tapyNullX - 1 != -1:
-                            self.battleMapBot[tapyNullX - 1][tapyOneX - 1] = "[*]"
-                            self.battleMapBot_view[tapyNullX - 1][tapyOneX - 1] = "[*]"
-                            button_name = "pushButtonBot" + str(one - 1) + str(two - 1)
+    try:
+        def shoot(self, row, col, self_game_map):
+            def color_button(one, two):
+                button_name = "pushButtonBot" + str(one) + str(two)
+                button = getattr(self.gameMapOne, button_name)
+                button.setStyleSheet('color: rgb(255, 0, 0); background-color: rgb(240, 228, 228)')
+            def dotsAroundShips(tapy, tapyNullX, tapyOneX, one, two):
+                if tapy == "x+":
+                    if self.battleMapBot[tapyNullX][tapyOneX] != "[O]" or self.battleMapBot[tapyNullX][
+                        tapyOneX] != "[x]":
+                        if tapyOneX - 1 != -1:
+                            if tapyNullX - 1 != -1:
+                                self.battleMapBot[tapyNullX - 1][tapyOneX - 1] = "[*]"
+                                self.battleMapBot_view[tapyNullX - 1][tapyOneX - 1] = "[*]"
+                                button_name = "pushButtonBot" + str(one - 1) + str(two - 1)
+                                button = getattr(self.gameMapOne, button_name)
+                                button.setText("*")
+                            if tapyNullX + 1 != 10:
+                                self.battleMapBot[tapyNullX + 1][tapyOneX - 1] = "[*]"
+                                self.battleMapBot_view[tapyNullX + 1][tapyOneX - 1] = "[*]"
+                                button_name = "pushButtonBot" + str(one + 1) + str(two - 1)
+                                button = getattr(self.gameMapOne, button_name)
+                                button.setText("*")
+                            self.battleMapBot[tapyNullX][tapyOneX - 1] = "[*]"
+                            self.battleMapBot_view[tapyNullX][tapyOneX - 1] = "[*]"
+                            button_name = "pushButtonBot" + str(one) + str(two - 1)
                             button = getattr(self.gameMapOne, button_name)
                             button.setText("*")
-                        if tapyNullX + 1 != 10:
-                            self.battleMapBot[tapyNullX + 1][tapyOneX - 1] = "[*]"
-                            self.battleMapBot_view[tapyNullX + 1][tapyOneX - 1] = "[*]"
-                            button_name = "pushButtonBot" + str(one + 1) + str(two - 1)
-                            button = getattr(self.gameMapOne, button_name)
-                            button.setText("*")
-                        self.battleMapBot[tapyNullX][tapyOneX - 1] = "[*]"
-                        self.battleMapBot_view[tapyNullX][tapyOneX - 1] = "[*]"
-                        button_name = "pushButtonBot" + str(one) + str(two - 1)
-                        button = getattr(self.gameMapOne, button_name)
-                        button.setText("*")
-                    if self.battleMapBot[tapyNullX][tapyOneX] == "[x]":
-                        if tapyNullX - 1 != -1:
-                            self.battleMapBot[tapyNullX - 1][tapyOneX] = "[*]"
-                            self.battleMapBot_view[tapyNullX - 1][tapyOneX] = "[*]"
-                            button_name = "pushButtonBot" + str(one - 1) + str(two)
-                            button = getattr(self.gameMapOne, button_name)
-                            button.setText("*")
-                        if tapyNullX + 1 != 10:
-                            self.battleMapBot[tapyNullX + 1][tapyOneX] = "[*]"
-                            self.battleMapBot_view[tapyNullX + 1][tapyOneX] = "[*]"
-                            button_name = "pushButtonBot" + str(one + 1) + str(two)
-                            button = getattr(self.gameMapOne, button_name)
-                            button.setText("*")
-                        if tapyOneX + 1 != 10:
-                            if self.battleMapBot[tapyNullX][tapyOneX + 1] == "[x]":
-                                if tapyNullX - 1 != -1:
-                                    self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
-                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 1] = "[*]"
-                                    button_name = "pushButtonBot" + str(one - 1) + str(two + 1)
-                                    button = getattr(self.gameMapOne, button_name)
-                                    button.setText("*")
-                                if tapyNullX + 1 != 10:
-                                    self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
-                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 1] = "[*]"
-                                    button_name = "pushButtonBot" + str(one + 1) + str(two + 1)
-                                    button = getattr(self.gameMapOne, button_name)
-                                    button.setText("*")
-                                if tapyOneX + 2 != 10:
-                                    if self.battleMapBot[tapyNullX][tapyOneX + 2] == "[x]":
-                                        if tapyNullX - 1 != -1:
-                                            self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
-                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
-                                            button_name = "pushButtonBot" + str(one - 1) + str(two + 2)
-                                            button = getattr(self.gameMapOne, button_name)
-                                            button.setText("*")
-                                        if tapyNullX + 1 != 10:
-                                            self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
-                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
-                                            button_name = "pushButtonBot" + str(one + 1) + str(two + 2)
-                                            button = getattr(self.gameMapOne, button_name)
-                                            button.setText("*")
-                                        if tapyOneX + 3 != 10:
-                                            if self.battleMapBot[tapyNullX][tapyOneX + 3] == "[x]":
-                                                if tapyNullX - 1 != -1:
-                                                    self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
-                                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
-                                                    button_name = "pushButtonBot" + str(one - 1) + str(two + 3)
-                                                    button = getattr(self.gameMapOne, button_name)
-                                                    button.setText("*")
-                                                if tapyNullX + 1 != 10:
-                                                    self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
-                                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
-                                                    button_name = "pushButtonBot" + str(one + 1) + str(two + 3)
-                                                    button = getattr(self.gameMapOne, button_name)
-                                                    button.setText("*")
-                                                if tapyOneX + 4 != 10:
-                                                    if tapyNullX - 1 != -1:
-                                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 4] = "[*]"
-                                                        self.battleMapBot_view[tapyNullX - 1][tapyOneX + 4] = "[*]"
-                                                        button_name = "pushButtonBot" + str(one - 1) + str(two + 4)
-                                                        button = getattr(self.gameMapOne, button_name)
-                                                        button.setText("*")
-                                                    if tapyNullX + 1 != 10:
-                                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 4] = "[*]"
-                                                        self.battleMapBot_view[tapyNullX + 1][tapyOneX + 4] = "[*]"
-                                                        button_name = "pushButtonBot" + str(one + 1) + str(two + 4)
-                                                        button = getattr(self.gameMapOne, button_name)
-                                                        button.setText("*")
-                                                    self.battleMapBot[tapyNullX][tapyOneX + 4] = "[*]"
-                                                    self.battleMapBot_view[tapyNullX][tapyOneX + 4] = "[*]"
-                                                    button_name = "pushButtonBot" + str(one) + str(two + 4)
-                                                    button = getattr(self.gameMapOne, button_name)
-                                                    button.setText("*")
-                                            else:
-                                                if tapyNullX - 1 != -1:
-                                                    self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
-                                                    self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
-                                                    button_name = "pushButtonBot" + str(one - 1) + str(two + 3)
-                                                    button = getattr(self.gameMapOne, button_name)
-                                                    button.setText("*")
-                                                if tapyNullX + 1 != 10:
-                                                    self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
-                                                    self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
-                                                    button_name = "pushButtonBot" + str(one + 1) + str(two + 3)
-                                                    button = getattr(self.gameMapOne, button_name)
-                                                    button.setText("*")
-                                                self.battleMapBot[tapyNullX][tapyOneX + 3] = "[*]"
-                                                self.battleMapBot_view[tapyNullX][tapyOneX + 3] = "[*]"
-                                                button_name = "pushButtonBot" + str(one) + str(two + 3)
-                                                button = getattr(self.gameMapOne, button_name)
-                                                button.setText("*")
-                                    else:
-                                        if tapyNullX - 1 != -1:
-                                            self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
-                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
-                                            button_name = "pushButtonBot" + str(one - 1) + str(two + 2)
-                                            button = getattr(self.gameMapOne, button_name)
-                                            button.setText("*")
-                                        if tapyNullX + 1 != 10:
-                                            self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
-                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
-                                            button_name = "pushButtonBot" + str(one + 1) + str(two + 2)
-                                            button = getattr(self.gameMapOne, button_name)
-                                            button.setText("*")
-                                        self.battleMapBot[tapyNullX][tapyOneX + 2] = "[*]"
-                                        self.battleMapBot_view[tapyNullX][tapyOneX + 2] = "[*]"
-                                        button_name = "pushButtonBot" + str(one) + str(two + 2)
-                                        button = getattr(self.gameMapOne, button_name)
-                                        button.setText("*")
-
-                            else:
-                                if tapyNullX - 1 != -1:
-                                    if tapyOneX + 1 != 10:
+                        if self.battleMapBot[tapyNullX][tapyOneX] == "[x]":
+                            color_button(one, two)
+                            if tapyNullX - 1 != -1:
+                                self.battleMapBot[tapyNullX - 1][tapyOneX] = "[*]"
+                                self.battleMapBot_view[tapyNullX - 1][tapyOneX] = "[*]"
+                                button_name = "pushButtonBot" + str(one - 1) + str(two)
+                                button = getattr(self.gameMapOne, button_name)
+                                button.setText("*")
+                            if tapyNullX + 1 != 10:
+                                self.battleMapBot[tapyNullX + 1][tapyOneX] = "[*]"
+                                self.battleMapBot_view[tapyNullX + 1][tapyOneX] = "[*]"
+                                button_name = "pushButtonBot" + str(one + 1) + str(two)
+                                button = getattr(self.gameMapOne, button_name)
+                                button.setText("*")
+                            if tapyOneX + 1 != 10:
+                                if self.battleMapBot[tapyNullX][tapyOneX + 1] == "[x]":
+                                    color_button(one, two+1)
+                                    if tapyNullX - 1 != -1:
                                         self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
                                         self.battleMapBot_view[tapyNullX - 1][tapyOneX + 1] = "[*]"
                                         button_name = "pushButtonBot" + str(one - 1) + str(two + 1)
                                         button = getattr(self.gameMapOne, button_name)
                                         button.setText("*")
-                                if tapyNullX + 1 != 10:
-                                    if tapyOneX + 1 != 10:
+                                    if tapyNullX + 1 != 10:
                                         self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
                                         self.battleMapBot_view[tapyNullX + 1][tapyOneX + 1] = "[*]"
                                         button_name = "pushButtonBot" + str(one + 1) + str(two + 1)
                                         button = getattr(self.gameMapOne, button_name)
                                         button.setText("*")
-                                if tapyOneX + 1 != 10:
-                                    self.battleMapBot[tapyNullX][tapyOneX + 1] = "[*]"
-                                    self.battleMapBot_view[tapyNullX][tapyOneX + 1] = "[*]"
-                                    button_name = "pushButtonBot" + str(one) + str(two + 1)
-                                    button = getattr(self.gameMapOne, button_name)
-                                    button.setText("*")
+                                    if tapyOneX + 2 != 10:
+                                        if self.battleMapBot[tapyNullX][tapyOneX + 2] == "[x]":
+                                            color_button(one, two+2)
+                                            if tapyNullX - 1 != -1:
+                                                self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                                self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                                button_name = "pushButtonBot" + str(one - 1) + str(two + 2)
+                                                button = getattr(self.gameMapOne, button_name)
+                                                button.setText("*")
+                                            if tapyNullX + 1 != 10:
+                                                self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                                self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                                button_name = "pushButtonBot" + str(one + 1) + str(two + 2)
+                                                button = getattr(self.gameMapOne, button_name)
+                                                button.setText("*")
+                                            if tapyOneX + 3 != 10:
+                                                if self.battleMapBot[tapyNullX][tapyOneX + 3] == "[x]":
+                                                    color_button(one, two+3)
+                                                    if tapyNullX - 1 != -1:
+                                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                        button_name = "pushButtonBot" + str(one - 1) + str(two + 3)
+                                                        button = getattr(self.gameMapOne, button_name)
+                                                        button.setText("*")
+                                                    if tapyNullX + 1 != 10:
+                                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                        button_name = "pushButtonBot" + str(one + 1) + str(two + 3)
+                                                        button = getattr(self.gameMapOne, button_name)
+                                                        button.setText("*")
+                                                    if tapyOneX + 4 != 10:
+                                                        if tapyNullX - 1 != -1:
+                                                            self.battleMapBot[tapyNullX - 1][tapyOneX + 4] = "[*]"
+                                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 4] = "[*]"
+                                                            button_name = "pushButtonBot" + str(one - 1) + str(two + 4)
+                                                            button = getattr(self.gameMapOne, button_name)
+                                                            button.setText("*")
+                                                        if tapyNullX + 1 != 10:
+                                                            self.battleMapBot[tapyNullX + 1][tapyOneX + 4] = "[*]"
+                                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 4] = "[*]"
+                                                            button_name = "pushButtonBot" + str(one + 1) + str(two + 4)
+                                                            button = getattr(self.gameMapOne, button_name)
+                                                            button.setText("*")
+                                                        self.battleMapBot[tapyNullX][tapyOneX + 4] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX][tapyOneX + 4] = "[*]"
+                                                        button_name = "pushButtonBot" + str(one) + str(two + 4)
+                                                        button = getattr(self.gameMapOne, button_name)
+                                                        button.setText("*")
+                                                else:
+                                                    if tapyNullX - 1 != -1:
+                                                        self.battleMapBot[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX - 1][tapyOneX + 3] = "[*]"
+                                                        button_name = "pushButtonBot" + str(one - 1) + str(two + 3)
+                                                        button = getattr(self.gameMapOne, button_name)
+                                                        button.setText("*")
+                                                    if tapyNullX + 1 != 10:
+                                                        self.battleMapBot[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                        self.battleMapBot_view[tapyNullX + 1][tapyOneX + 3] = "[*]"
+                                                        button_name = "pushButtonBot" + str(one + 1) + str(two + 3)
+                                                        button = getattr(self.gameMapOne, button_name)
+                                                        button.setText("*")
+                                                    self.battleMapBot[tapyNullX][tapyOneX + 3] = "[*]"
+                                                    self.battleMapBot_view[tapyNullX][tapyOneX + 3] = "[*]"
+                                                    button_name = "pushButtonBot" + str(one) + str(two + 3)
+                                                    button = getattr(self.gameMapOne, button_name)
+                                                    button.setText("*")
+                                        else:
+                                            if tapyNullX - 1 != -1:
+                                                self.battleMapBot[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                                self.battleMapBot_view[tapyNullX - 1][tapyOneX + 2] = "[*]"
+                                                button_name = "pushButtonBot" + str(one - 1) + str(two + 2)
+                                                button = getattr(self.gameMapOne, button_name)
+                                                button.setText("*")
+                                            if tapyNullX + 1 != 10:
+                                                self.battleMapBot[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                                self.battleMapBot_view[tapyNullX + 1][tapyOneX + 2] = "[*]"
+                                                button_name = "pushButtonBot" + str(one + 1) + str(two + 2)
+                                                button = getattr(self.gameMapOne, button_name)
+                                                button.setText("*")
+                                            self.battleMapBot[tapyNullX][tapyOneX + 2] = "[*]"
+                                            self.battleMapBot_view[tapyNullX][tapyOneX + 2] = "[*]"
+                                            button_name = "pushButtonBot" + str(one) + str(two + 2)
+                                            button = getattr(self.gameMapOne, button_name)
+                                            button.setText("*")
 
-        def cheekShoot(hitNull, hitOne):
-            one = int(self_game_map.objectName()[13])
-            two = int(self_game_map.objectName()[14])
-            # проверяем однопалубный корабль у границы
-            if hitOne + 1 == 10:
-                # проверяем однопалубный корабль у двух границ
-                if hitNull + 1 == 10:
+                                else:
+                                    if tapyNullX - 1 != -1:
+                                        if tapyOneX + 1 != 10:
+                                            self.battleMapBot[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                            self.battleMapBot_view[tapyNullX - 1][tapyOneX + 1] = "[*]"
+                                            button_name = "pushButtonBot" + str(one - 1) + str(two + 1)
+                                            button = getattr(self.gameMapOne, button_name)
+                                            button.setText("*")
+                                    if tapyNullX + 1 != 10:
+                                        if tapyOneX + 1 != 10:
+                                            self.battleMapBot[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                            self.battleMapBot_view[tapyNullX + 1][tapyOneX + 1] = "[*]"
+                                            button_name = "pushButtonBot" + str(one + 1) + str(two + 1)
+                                            button = getattr(self.gameMapOne, button_name)
+                                            button.setText("*")
+                                    if tapyOneX + 1 != 10:
+                                        self.battleMapBot[tapyNullX][tapyOneX + 1] = "[*]"
+                                        self.battleMapBot_view[tapyNullX][tapyOneX + 1] = "[*]"
+                                        button_name = "pushButtonBot" + str(one) + str(two + 1)
+                                        button = getattr(self.gameMapOne, button_name)
+                                        button.setText("*")
+
+            def cheekShoot(hitNull, hitOne):
+                one = int(self_game_map.objectName()[13])
+                two = int(self_game_map.objectName()[14])
+                # проверяем однопалубный корабль у границы
+                if hitOne + 1 == 10:
+                    # проверяем однопалубный корабль у двух границ
+                    if hitNull + 1 == 10:
+                        if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
+                            hitOne - 1] != "[x]") \
+                                and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
+                            hitOne] != "[x]"):
+                            # отправляем в точки
+                            self.gameMapOne.label.setText("Вы уничтожили корабль!")
+                            dotsAroundShips("x+", hitNull, hitOne, one, two)
+                    # проверяем однопалубный корабль у двух границ
+                    if hitNull - 1 == -1:
+                        if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
+                            hitOne - 1] != "[x]") \
+                                and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
+                            hitOne] != "[x]"):
+                            # отправляем в точки
+                            self.gameMapOne.label.setText("Вы уничтожили корабль!")
+                            dotsAroundShips("x+", hitNull, hitOne, one, two)
+                    # проверяем однопалубный корабль у границы
                     if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
                         hitOne - 1] != "[x]") \
                             and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
-                        hitOne] != "[x]"):
-                        # отправляем в точки
-                        self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                        dotsAroundShips("x+", hitNull, hitOne, one, two)
-                # проверяем однопалубный корабль у двух границ
-                if hitNull - 1 == -1:
-                    if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
-                        hitOne - 1] != "[x]") \
+                        hitOne] != "[x]") \
                             and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
                         hitOne] != "[x]"):
                         # отправляем в точки
                         self.gameMapOne.label.setText("Вы уничтожили корабль!")
                         dotsAroundShips("x+", hitNull, hitOne, one, two)
-                # проверяем однопалубный корабль у границы
-                if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
-                    hitOne - 1] != "[x]") \
-                        and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
-                    hitOne] != "[x]") \
-                        and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
-                    hitOne] != "[x]"):
-                    # отправляем в точки
-                    self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                    dotsAroundShips("x+", hitNull, hitOne, one, two)
 
-            # проверяем однопалубный корабль в поле
-            elif hitOne + 1 != 10 and hitOne - 1 != -1:
-                if (self.battleMapBot[hitNull][hitOne + 1] != "[O]" and self.battleMapBot[hitNull][
-                    hitOne + 1] != "[x]") \
-                        and (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
-                    hitOne - 1] != "[x]") \
-                        and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
-                    hitOne] != "[x]") \
-                        and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
-                    hitOne] != "[x]"):
-                    # отправляем в точки
-                    self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                    dotsAroundShips("x+", hitNull, hitOne, one, two)
-
-            # проверяем корабль от 1 до 4 палуб
-            for i in range(1, 5):
-                result = False
-                if hitOne + 1 == 10:
-                    for i1 in range(1, 5):
-                        if self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
-                                or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
+                # проверяем однопалубный корабль в поле
+                elif hitOne + 1 != 10 and hitOne - 1 != -1:
+                    if hitNull + 1 != 10 and hitNull - 1 != -1:
+                        if (self.battleMapBot[hitNull][hitOne + 1] != "[O]" and self.battleMapBot[hitNull][
+                            hitOne + 1] != "[x]") \
+                                and (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
+                            hitOne - 1] != "[x]") \
+                                and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
+                            hitOne] != "[x]") \
+                                and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
+                            hitOne] != "[x]"):
                             # отправляем в точки
                             self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                            dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
-                            result = True
-                            break
-                        elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
-                            result = True
-                            break
-                elif self.battleMapBot[hitNull][hitOne + i] == "[*]" \
-                        or self.battleMapBot[hitNull][hitOne + i] == "[ ]":
-                    for i1 in range(1, 5):
-                        if hitOne - 1 == -1:
-                            # отправляем в точки
-                            self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                            dotsAroundShips("x+", hitNull, hitOne - i1, one, two - i1)
-                            result = True
-                            break
-                        elif self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
-                                or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
-                            # отправляем в точки
-                            self.gameMapOne.label.setText("Вы уничтожили корабль!")
-                            dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
-                            result = True
-                            break
-                        elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
-                            result = True
-                            break
-                elif self.battleMapBot[hitNull][hitOne + i] == "[O]":
-                    break
-                if result == True:
-                    break
+                            dotsAroundShips("x+", hitNull, hitOne, one, two)
 
-        check = self.battleMapBot[row][col]
-        if check == "[x]" or check == "[*]":
-            self.gameMapOne.label.setText("Вы сюда стреляли! Попробуйте еще раз...")
-        if check == "[O]":
-            self.battleMapBot[row][col] = "[x]"
-            self.battleMapBot_view[row][col] = "[x]"
-            self_game_map.setText("Х")
-            self.gameMapOne.label.setText("Вы попали!")
-            cheekShoot(row, col)
-        else:
-            self.battleMapBot[row][col] = "[*]"
-            self.battleMapBot_view[row][col] = "[*]"
-            self_game_map.setText("*")
-            self.gameMapOne.label.setText("Вы промазали!")
-            time.sleep(1)
-            self.artificialIntelligence()
+                # проверяем корабль от 1 до 4 палуб
+                for i in range(1, 5):
+                    result = False
+                    if hitOne + i == 10 or hitOne + i > 9 :
+                        for i1 in range(1, 5):
+                            if self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
+                                    or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
+                                # отправляем в точки
+                                self.gameMapOne.label.setText("Вы уничтожили корабль!")
+                                dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
+                                result = True
+                                break
+                            elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
+                                result = True
+                                break
+                    elif self.battleMapBot[hitNull][hitOne + i] == "[*]" \
+                            or self.battleMapBot[hitNull][hitOne + i] == "[ ]":
+                        for i1 in range(1, 5):
+                            if hitOne - 1 == -1 or hitOne - i < 0:
+                                # отправляем в точки
+                                self.gameMapOne.label.setText("Вы уничтожили корабль!")
+                                dotsAroundShips("x+", hitNull, hitOne , one, two)
+                                result = True
+                                break
+                            elif self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
+                                    or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
+                                # отправляем в точки
+                                self.gameMapOne.label.setText("Вы уничтожили корабль!")
+                                dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
+                                result = True
+                                break
+                            elif self.battleMapBot[hitNull][hitOne - i1] == "[O]":
+                                result = True
+                                break
+                    elif self.battleMapBot[hitNull][hitOne + i] == "[O]":
+                        break
+                    if result == True:
+                        break
+
+            check = self.battleMapBot[row][col]
+            if check == "[x]" or check == "[*]":
+                self.gameMapOne.label.setText("Вы сюда стреляли! Попробуйте еще раз...")
+            elif check == "[O]":
+                self.battleMapBot[row][col] = "[x]"
+                self.battleMapBot_view[row][col] = "[x]"
+                self_game_map.setText("Х")
+                self.gameMapOne.label.setText("Вы попали!")
+                cheekShoot(row, col)
+            else:
+                self.battleMapBot[row][col] = "[*]"
+                self.battleMapBot_view[row][col] = "[*]"
+                self_game_map.setText("*")
+                self.gameMapOne.label.setText("Вы промазали!")
+                time.sleep(1)
+                self.artificialIntelligence()
+    except Exception:
+        print(traceback.format_exc())
 
     def methodSelection(self):
         print("Если в ручную нажмите '1' ")
@@ -513,6 +525,11 @@ class SeaMap:
         hitNullNull = 0
         hitOneOne = 0
 
+        def color_button(one, two):
+            button_name = "pushButton" + str(one) + str(two)
+            button = getattr(self.gameMapOne, button_name)
+            button.setStyleSheet('color: rgb(255, 0, 0); background-color: rgb(240, 228, 228)')
+
         def button_processing(one, two):
             button_name = "pushButton" + str(one) + str(two)
             button = getattr(self.gameMapOne, button_name)
@@ -537,6 +554,7 @@ class SeaMap:
                         self.battleMap[tapyNullX][tapyOneX - 1] = "[*]"
                         button_processing(tapyNullX, tapyOneX - 1)
                     if self.battleMap[tapyNullX][tapyOneX] == "[x]":
+                        color_button(tapyNullX, tapyOneX)
                         if tapyNullX - 1 != -1:
                             self.battleMap[tapyNullX - 1][tapyOneX] = "[*]"
                             button_processing(tapyNullX - 1, tapyOneX)
@@ -545,6 +563,7 @@ class SeaMap:
                             button_processing(tapyNullX + 1, tapyOneX)
                         if tapyOneX + 1 != 10:
                             if self.battleMap[tapyNullX][tapyOneX + 1] == "[x]":
+                                color_button(tapyNullX, tapyOneX+1)
                                 if tapyNullX - 1 != -1:
                                     self.battleMap[tapyNullX - 1][tapyOneX + 1] = "[*]"
                                     button_processing(tapyNullX - 1, tapyOneX + 1)
@@ -553,6 +572,7 @@ class SeaMap:
                                     button_processing(tapyNullX + 1, tapyOneX + 1)
                                 if tapyOneX + 2 != 10:
                                     if self.battleMap[tapyNullX][tapyOneX + 2] == "[x]":
+                                        color_button(tapyNullX, tapyOneX+2)
                                         if tapyNullX - 1 != -1:
                                             self.battleMap[tapyNullX - 1][tapyOneX + 2] = "[*]"
                                             button_processing(tapyNullX - 1, tapyOneX + 2)
@@ -561,6 +581,7 @@ class SeaMap:
                                             button_processing(tapyNullX + 1, tapyOneX + 2)
                                         if tapyOneX + 3 != 10:
                                             if self.battleMap[tapyNullX][tapyOneX + 3] == "[x]":
+                                                color_button(tapyNullX, tapyOneX+3)
                                                 if tapyNullX - 1 != -1:
                                                     self.battleMap[tapyNullX - 1][tapyOneX + 3] = "[*]"
                                                     button_processing(tapyNullX - 1, tapyOneX + 3)
@@ -822,26 +843,27 @@ class SeaMap:
 
             # проверяем однопалубный корабль в поле
             if hitOne + 1 != 10 and hitOne - 1 != -1:
-                if (self.battleMap[hitNull][hitOne + 1] != "[O]" and self.battleMap[hitNull][
-                    hitOne + 1] != "[x]") \
-                        and (self.battleMap[hitNull][hitOne - 1] != "[O]" and self.battleMap[hitNull][
-                    hitOne - 1] != "[x]") \
-                        and (self.battleMap[hitNull + 1][hitOne] != "[O]" and self.battleMap[hitNull + 1][
-                    hitOne] != "[x]") \
-                        and (self.battleMap[hitNull - 1][hitOne] != "[O]" and self.battleMap[hitNull - 1][
-                    hitOne] != "[x]"):
-                    if directionAlgorithm(hitNull, hitOne, "horizontal+") == True:
-                        self.botMemory = ""
-                        return True
-                # проверяем направление в x+
-                elif (self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][hitOne + 1] != "[x]") \
-                        and (self.botMemory == "x+" or self.botMemory == ""):
-                    directionAlgorithm(hitNull, hitOne, "horizontal+")
-                # проверяем направление в x-
-                elif (self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
-                    hitOne - 1] != "[x]") \
-                        and (self.botMemory == "x-" or self.botMemory == ""):
-                    directionAlgorithm(hitNull, hitOne, "horizontal-")
+                if hitNull + 1 != 10 and hitNull - 1 != -1:
+                    if (self.battleMap[hitNull][hitOne + 1] != "[O]" and self.battleMap[hitNull][
+                        hitOne + 1] != "[x]") \
+                            and (self.battleMap[hitNull][hitOne - 1] != "[O]" and self.battleMap[hitNull][
+                        hitOne - 1] != "[x]") \
+                            and (self.battleMap[hitNull + 1][hitOne] != "[O]" and self.battleMap[hitNull + 1][
+                        hitOne] != "[x]") \
+                            and (self.battleMap[hitNull - 1][hitOne] != "[O]" and self.battleMap[hitNull - 1][
+                        hitOne] != "[x]"):
+                        if directionAlgorithm(hitNull, hitOne, "horizontal+") == True:
+                            self.botMemory = ""
+                            return True
+                    # проверяем направление в x+
+                    elif (self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][hitOne + 1] != "[x]") \
+                            and (self.botMemory == "x+" or self.botMemory == ""):
+                        directionAlgorithm(hitNull, hitOne, "horizontal+")
+                    # проверяем направление в x-
+                    elif (self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
+                        hitOne - 1] != "[x]") \
+                            and (self.botMemory == "x-" or self.botMemory == ""):
+                        directionAlgorithm(hitNull, hitOne, "horizontal-")
 
         if self.botMemory != "":
             if self.botMemory == "x+":
@@ -902,7 +924,7 @@ class SeaMap:
     def start_game(self):
         print("Добропожаловать в")
         print(
-            "------------------------------------------------------------МОРСКОЙ БОЙ------------------------------------------------------------")
+            "--------------------------МОРСКОЙ БОЙ--------------------------")
         time.sleep(2)
         print("\nДавайте начнем игру!")
         time.sleep(1)
@@ -910,20 +932,3 @@ class SeaMap:
         print("\nКак вы хотите создать карту?")
         self.methodSelection()
 
-        # while True:
-        #
-        #
-        #
-        #     if self.shoot(row, col):
-        #         print("\n")
-        #         for i in range(10):
-        #             print(self.battleMapBot_view[i])
-        #         time.sleep(2)
-        #         continue
-        #     print("Теперь атакует Бот")
-        #     print("\n")
-        #     self.artificialIntelligence()
-        #     for i in range(10):
-        #         print(self.battleMap[i])
-        #     time.sleep(4)
-        #     print("Ваш ход!" + "\n")
