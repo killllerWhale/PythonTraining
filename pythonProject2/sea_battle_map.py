@@ -1410,7 +1410,7 @@ class Ui_MainWindow(object):
         one = int(button.objectName()[13])
         two = int(button.objectName()[14])
         try:
-            a.shoot(one,two, button)
+            a.shoot(one,two, button, self.label)
         except Exception:
             print(traceback.format_exc())
 
