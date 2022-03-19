@@ -1,7 +1,7 @@
 import random
 import time
 import traceback
-
+from PyQt5 import QtCore, QtWidgets
 
 class SeaMap:
 
@@ -13,6 +13,11 @@ class SeaMap:
         self.botMemoryCoordinatesNull = 0
         self.botMemoryCoordinatesOne = 0
         self.gameMapOne = gameMap
+        self.bot_victory_score = 0
+        self.user_victory_score = 0
+        self.victory_score = 12
+
+
 
     try:
         def shoot(self, row, col, self_game_map, textBot):
@@ -531,37 +536,43 @@ class SeaMap:
                 else:
                     creatingShip(decks)
 
-        creatingShip(random.choice([-3, 3]))
-        creatingShip(random.choice([-3, 3]))
-        creatingShip(random.choice([-2, 2]))
-        creatingShip(random.choice([-2, 2]))
-        creatingShip(random.choice([-1, 1]))
-        creatingShip(random.choice([-1, 1]))
-        creatingShip(random.choice([-1, 1]))
-        creatingShip(0)
-        creatingShip(0)
-        creatingShip(0)
-        creatingShip(0)
+        #Колличество кораблей
+
+        creatingShip(random.choice([-3, 3]))#1
+        creatingShip(random.choice([-3, 3]))#2
+        creatingShip(random.choice([-2, 2]))#3
+        creatingShip(random.choice([-2, 2]))#4
+        creatingShip(random.choice([-1, 1]))#5
+        creatingShip(random.choice([-1, 1]))#6
+        creatingShip(random.choice([-1, 1]))#8
+        creatingShip(0)#9
+        creatingShip(0)#10
+        creatingShip(0)#11
+        creatingShip(0)#12
 
     def artificialIntelligence(self):
         hitNullNull = 0
         hitOneOne = 0
 
+        # присваивает кнопке при попадании стиль
         def color_button(one, two):
             button_name = "pushButton" + str(one) + str(two)
             button = getattr(self.gameMapOne, button_name)
             button.setStyleSheet('color: rgb(255, 0, 0); background-color: rgb(240, 228, 228)')
 
+        # присваивает кнопке при промахе стиль
         def color_buttonNone(one, two):
             button_name = "pushButton" + str(one) + str(two)
             button = getattr(self.gameMapOne, button_name)
             button.setStyleSheet('color: rgb(0, 0, 0); background-color: rgb(226, 235, 131)')
 
+        # присваивает кнопке текст "*"
         def button_processing(one, two):
             button_name = "pushButton" + str(one) + str(two)
             button = getattr(self.gameMapOne, button_name)
             button.setText("*")
 
+        #присваивает кнопке текст "X"
         def button_processingХ(one, two):
             button_name = "pushButton" + str(one) + str(two)
             button = getattr(self.gameMapOne, button_name)
@@ -691,6 +702,7 @@ class SeaMap:
                                 if self.battleMap[hitNull][hitOne + 3] == "[x]":
                                     if hitOne + 4 == 10:
                                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                                        self.bot_victory_score += 1
                                         # передаем в метод для раставления точек
                                         dotsAroundShips("x+", hitNull, hitOne)
                                         self.botMemory = ""
@@ -698,6 +710,7 @@ class SeaMap:
                                     elif self.battleMap[hitNull][hitOne + 4] == "[*]" or self.battleMap[hitNull][
                                         hitOne + 4] == "[ ]":
                                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                                        self.bot_victory_score += 1
                                         # передаем в метод для раставления точек
                                         dotsAroundShips("x+", hitNull, hitOne)
                                         self.botMemory = ""
@@ -709,6 +722,7 @@ class SeaMap:
                                         hitOne + 3] == "[ ]" or self.battleMap[hitNull][hitOne + 3] == "[*]" or (
                                             hitOne + 3) == 10:
                                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                                        self.bot_victory_score += 1
                                         # передаем в метод для раставления точек
                                         dotsAroundShips("x+", hitNull, hitOne)
                                         self.botMemory = ""
@@ -717,6 +731,7 @@ class SeaMap:
                                         return False
                             else:
                                 self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                                self.bot_victory_score += 1
                                 # передаем в метод для раставления точек
                                 dotsAroundShips("x+", hitNull, hitOne)
                                 self.botMemory = ""
@@ -726,6 +741,7 @@ class SeaMap:
                                 hitOne + 2] == "[ ]" or self.battleMap[hitNull][hitOne + 2] == "[*]" or (
                                     hitOne + 2) == 10:
                                 self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                                self.bot_victory_score += 1
                                 # передаем в метод для раставления точек
                                 dotsAroundShips("x+", hitNull, hitOne)
                                 self.botMemory = ""
@@ -734,6 +750,7 @@ class SeaMap:
                                 return False
                     else:
                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                        self.bot_victory_score += 1
                         # передаем в метод для раставления точек
                         dotsAroundShips("x+", hitNull, hitOne)
                         self.botMemory = ""
@@ -743,6 +760,7 @@ class SeaMap:
                         hitOne + 1] == "[*]" or self.battleMap[hitNull][
                         hitOne + 1] == "[ ]" or (hitOne + 1) == 10:
                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                        self.bot_victory_score += 1
                         # передаем в метод для раставления точек
                         dotsAroundShips("x+", hitNull, hitOne)
                         self.botMemory = ""
@@ -757,6 +775,7 @@ class SeaMap:
                         hitOneOne - 1] == "[*]":
                         # проверяет уничтожен корабль или нет
                         self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                        self.bot_victory_score += 1
                         # передаем в метод для раставления точек
                         dotsAroundShips("x+", hitNullNull, hitOneOne)
                         self.botMemory = ""
@@ -779,6 +798,7 @@ class SeaMap:
                             # проверяет уничтожен корабль или нет
 
                             self.gameMapOne.label.setText("Бот уничтожил твой корабль! ")
+                            self.bot_victory_score += 1
 
                             # передаем в метод для раставления точек
                             dotsAroundShips("x+", hitNullNull, hitOneOne)
@@ -969,17 +989,20 @@ class SeaMap:
                 hitNull = self.botMemoryCoordinatesNull
                 hitOne = self.botMemoryCoordinatesOne
             if self.botMemory == "x-":
-                hitNull =  self.botMemoryCoordinatesNull
-                hitOne =  self.botMemoryCoordinatesOne - 1
+                hitNull = self.botMemoryCoordinatesNull
+                hitOne = self.botMemoryCoordinatesOne - 1
+        elif self.bot_victory_score == 12:
+            self.label.setText("Бот победил! ")
+            return False
         else:
             # выбор рандомного координата
             try:
-                 hitNull =   random.randint(0, 9)
-                 hitOne =  random.randint(0, 9)
-
+                hitNull =    random.randint(0, 9)
+                hitOne =  random.randint(0, 9)
             except Exception:
                 hitNull = 0
                 hitOne = 0
+
                 if self.battleMap[hitNull][hitOne] != "[ ]" or self.battleMap[hitNull][hitOne] != "[O]":
                     for i in range(10):
                         if self.battleMap[hitNull][hitOne] == "[ ]" or self.battleMap[hitNull][hitOne] == "[O]":
@@ -992,7 +1015,6 @@ class SeaMap:
                                         hitNull = q
                                         hitOne = i1
                                         break
-                            self.gameMapOne.label.setText("Игра окончина! ")
 
         if self.battleMap[hitNull][hitOne] == "[ ]":
             self.battleMap[hitNull][hitOne] = "[*]"

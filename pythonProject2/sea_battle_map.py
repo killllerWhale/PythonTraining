@@ -1262,6 +1262,14 @@ class Ui_MainWindow(object):
                                            "color: rgb(0, 0, 0);")
         self.pushButtonBot07.setText("")
         self.pushButtonBot07.setObjectName("pushButtonBot07")
+
+        self.pushButtonRestart = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButtonRestart.setGeometry(QtCore.QRect(700, 462, 100, 30))
+        self.pushButtonRestart.setStyleSheet("background-color: rgb(226, 235, 131);\n"
+                                             "color: rgb(0, 0, 0);")
+        self.pushButtonRestart.setText("Играть еще раз!")
+        self.pushButtonRestart.setObjectName("pushButtonRestart")
+
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(236, 462, 391, 31))
         self.label.setObjectName("label")
@@ -1276,12 +1284,14 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.start_game()
         self.label.setText("Сделайте пушечный выстрел!")
 
     def button_processing(self):
+        self.pushButtonRestart.clicked.connect(lambda: self.repeat_game())
         self.pushButtonBot00.clicked.connect(lambda: self.field_cell_status(self.pushButtonBot00))
         self.pushButtonBot01.clicked.connect(lambda: self.field_cell_status(self.pushButtonBot01))
         self.pushButtonBot02.clicked.connect(lambda: self.field_cell_status(self.pushButtonBot02))
@@ -1398,6 +1408,56 @@ class Ui_MainWindow(object):
                     button.setText("O")
         self.button_processing()
 
+    def repeat_game(self):
+        MainWindow.hide()
+        global a
+        try:
+            a = main.SeaMap(self)
+            a.start_game()
+        except Exception:
+            print(traceback.format_exc())
+        for i in range(10):
+            for i1 in range(10):
+                            button_name = "pushButton" + str(i) + str(i1)
+                            button = getattr(self, button_name)
+                            button.setText("")
+                            button.setStyleSheet("background-color: rgb(223, 223, 223);\n"
+                                           "color: rgb(0, 0, 0);")
+                            button_name_Bot = "pushButtonBot" + str(i) + str(i1)
+                            button_Bot = getattr(self, button_name_Bot)
+                            button_Bot.setText("")
+                            button_Bot.setStyleSheet("background-color: rgb(223, 223, 223);\n"
+                                                 "color: rgb(0, 0, 0);")
+        for i in range(10):
+            for i1 in range(10):
+                if a.battleMap[i][i1] == "[O]":
+                    button_name = "pushButton" + str(i) + str(i1)
+                    button = getattr(self, button_name)
+                    button.setText("O")
+        MainWindow.show()
+        self.button_processing()
+
+    # def win_game(self):
+    #     try:
+    #         for i in range(10):
+    #             for i1 in range(10):
+    #                 button_name = "pushButton" + str(i) + str(i1)
+    #                 button = getattr(self, button_name)
+    #                 button.setText("")
+    #                 button_name_Bot = "pushButtonBot" + str(i) + str(i1)
+    #                 button_Bot = getattr(self, button_name_Bot)
+    #                 button_Bot.setText("")
+    #         a.creatingShipsAutomatically(a.battleMap)
+    #         a.creatingShipsAutomatically(a.battleMapBot_view)
+    #         a.creatingShipsAutomatically(a.battleMapBot)
+    #         for i in range(10):
+    #             for i1 in range(10):
+    #                 if a.battleMap[i][i1] == "[O]":
+    #                     button_name = "pushButton" + str(i) + str(i1)
+    #                     button = getattr(self, button_name)
+    #                     button.setText("O")
+    #     except Exception:
+    #         print(traceback.format_exc())
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
