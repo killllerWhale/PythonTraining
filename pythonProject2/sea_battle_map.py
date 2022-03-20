@@ -1409,11 +1409,14 @@ class Ui_MainWindow(object):
         self.button_processing()
 
     def repeat_game(self):
-        MainWindow.hide()
-        global a
         try:
-            a = main.SeaMap(self)
-            a.start_game()
+            for i in range(10):
+                for i1 in range(10):
+                    a.battleMapBot_view[i][i1]="[ ]"
+                    a.battleMapBot[i][i1] = "[ ]"
+                    a.battleMap[i][i1] = "[ ]"
+            a.creatingShipsAutomatically(a.battleMapBot)
+            a.creatingShipsAutomatically(a.battleMap)
         except Exception:
             print(traceback.format_exc())
         for i in range(10):
@@ -1434,7 +1437,8 @@ class Ui_MainWindow(object):
                     button_name = "pushButton" + str(i) + str(i1)
                     button = getattr(self, button_name)
                     button.setText("O")
-        MainWindow.show()
+        a.user_victory_score = 0
+        a.bot_victory_score = 0
         self.button_processing()
 
     # def win_game(self):

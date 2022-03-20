@@ -16,6 +16,7 @@ class SeaMap:
         self.bot_victory_score = 0
         self.user_victory_score = 0
         self.victory_score = 12
+        self.cheating = 0
 
 
 
@@ -222,6 +223,7 @@ class SeaMap:
                                 and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
                             hitOne] != "[x]"):
                             # отправляем в точки
+                            self.user_victory_score += 1
                             dotsAroundShips("x+", hitNull, hitOne, one, two)
                     # проверяем однопалубный корабль у двух границ
                     if hitNull - 1 == -1:
@@ -230,6 +232,7 @@ class SeaMap:
                                 and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
                             hitOne] != "[x]"):
                             # отправляем в точки
+                            self.user_victory_score += 1
                             dotsAroundShips("x+", hitNull, hitOne, one, two)
                     # проверяем однопалубный корабль у границы
                     if (self.battleMapBot[hitNull][hitOne - 1] != "[O]" and self.battleMapBot[hitNull][
@@ -239,6 +242,7 @@ class SeaMap:
                             and (self.battleMapBot[hitNull + 1][hitOne] != "[O]" and self.battleMapBot[hitNull + 1][
                         hitOne] != "[x]"):
                         # отправляем в точки
+                        self.user_victory_score += 1
                         dotsAroundShips("x+", hitNull, hitOne, one, two)
 
                 # проверяем однопалубный корабль в поле
@@ -253,6 +257,7 @@ class SeaMap:
                                 and (self.battleMapBot[hitNull - 1][hitOne] != "[O]" and self.battleMapBot[hitNull - 1][
                             hitOne] != "[x]"):
                             # отправляем в точки
+                            self.user_victory_score += 1
                             dotsAroundShips("x+", hitNull, hitOne, one, two)
 
                 # проверяем корабль от 1 до 4 палуб
@@ -263,6 +268,7 @@ class SeaMap:
                             if self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
                                     or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
                                 # отправляем в точки
+                                self.user_victory_score += 1
                                 dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
                                 result = True
                                 break
@@ -274,12 +280,14 @@ class SeaMap:
                         for i1 in range(1, 5):
                             if hitOne - 1 == -1 or hitOne - i < -1:
                                 # отправляем в точки
+                                self.user_victory_score += 1
                                 dotsAroundShips("x+", hitNull, hitOne , one, two)
                                 result = True
                                 break
                             elif self.battleMapBot[hitNull][hitOne - i1] == "[*]" \
                                     or self.battleMapBot[hitNull][hitOne - i1] == "[ ]":
                                 # отправляем в точки
+                                self.user_victory_score+=1
                                 dotsAroundShips("x+", hitNull, hitOne - i1 + 1, one, two - i1 + 1)
                                 result = True
                                 break
@@ -292,7 +300,13 @@ class SeaMap:
                         break
 
             check = self.battleMapBot[row][col]
-            if check == "[x]" or check == "[*]":
+            if self.bot_victory_score == 12:
+                self.gameMapOne.label.setText("Бот победил! ")
+                return False
+            elif self.user_victory_score == 12:
+                self.gameMapOne.label.setText("Вы выиграли! ")
+                return False
+            elif check == "[x]" or check == "[*]":
                 self.gameMapOne.label.setText("Вы сюда стреляли! Попробуйте еще раз...")
             elif check == "[O]":
                 self.battleMapBot[row][col] = "[x]"
@@ -781,7 +795,7 @@ class SeaMap:
                         self.botMemory = ""
                         return True
                     else:
-                        self.botMemory = "x+"
+                        self.botMemory = "x-"
                         return False
                 if self.battleMap[hitNull][hitOne + 1] != "[*]" or self.battleMap[hitNull][
                     hitOne + 1] != "[x]":
@@ -817,27 +831,34 @@ class SeaMap:
 
                             return False
             elif direction == "horizontal-":
-                if self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
-                    hitOne - 1] != "[x]" or (hitOne - 1) != -1:
-                    if self.battleMap[hitNull][hitOne - 1] == "[O]":
-                        #time.sleep(1)
-                        self.gameMapOne.label.setText("Бот попал !")
-                        self.battleMap[hitNull][hitOne - 1] = "[x]"
-                        button_processingХ(hitNull, hitOne - 1)
-                        directionAlgorithm(hitNull, hitOne - 1, "horizontal-")
-                        # проходит и уничтожает до конца
-                    else:
-                        if cheekShoot(hitNull, hitOne, "hitOne+"):
-                            self.botMemory = ""
-                            return True
-                        else:
+                if hitOne - 1 != -1:
+                    if self.battleMap[hitNull][hitOne - 1] != "[*]" or self.battleMap[hitNull][
+                        hitOne - 1] != "[x]" or (hitOne - 1) != -1:
+                        if self.battleMap[hitNull][hitOne - 1] == "[O]":
                             #time.sleep(1)
-                            self.gameMapOne.label.setText("Бот промазал ! ")
-                            self.battleMap[hitNull][hitOne - 1] = "[*]"
-                            color_buttonNone(hitNull, hitOne - 1)
-                            button_processing(hitNull, hitOne - 1)
-                            self.botMemory = "x+"
-                            return False
+                            self.gameMapOne.label.setText("Бот попал !")
+                            self.battleMap[hitNull][hitOne - 1] = "[x]"
+                            button_processingХ(hitNull, hitOne - 1)
+                            directionAlgorithm(hitNull, hitOne - 1, "horizontal-")
+                            # проходит и уничтожает до конца
+                        else:
+                            if cheekShoot(hitNull, hitOne, "hitOne+"):
+                                self.botMemory = ""
+                                return True
+                            else:
+                                #time.sleep(1)
+                                self.gameMapOne.label.setText("Бот промазал ! ")
+                                self.battleMap[hitNull][hitOne - 1] = "[*]"
+                                color_buttonNone(hitNull, hitOne - 1)
+                                button_processing(hitNull, hitOne - 1)
+                                self.botMemory = "x+"
+                                return False
+                else:
+                    cheekShoot(hitNull, hitOne, "hitOne+")
+                    self.botMemory = ""
+                    return True
+
+
 
         def demolitionAlgorithm(hitNull, hitOne):
             # проверяем однопалубный корабль у границы
@@ -992,16 +1013,35 @@ class SeaMap:
                 hitNull = self.botMemoryCoordinatesNull
                 hitOne = self.botMemoryCoordinatesOne - 1
         elif self.bot_victory_score == 12:
-            self.label.setText("Бот победил! ")
+            self.gameMapOne.label.setText("Бот победил! ")
             return False
         else:
             # выбор рандомного координата
             try:
-                hitNull =    random.randint(0, 9)
-                hitOne =  random.randint(0, 9)
+                if self.cheating == 4:
+                    hit = False
+                    for q in range(10):
+                        for i1 in range(10):
+                            if  self.battleMap[q][i1] == "[O]":
+                                hitNull = q
+                                if i1 == 9:
+                                    hitOne = i1
+                                else:
+                                    hitOne = i1+1
+                                self.cheating = 0
+                                hit = True
+                                break
+                        if hit == True:
+                            break
+
+                else:
+                    hitNull =    random.randint(0, 9)
+                    hitOne =  random.randint(0, 9)
+                    self.cheating +=1
             except Exception:
                 hitNull = 0
                 hitOne = 0
+                hit = False
 
                 if self.battleMap[hitNull][hitOne] != "[ ]" or self.battleMap[hitNull][hitOne] != "[O]":
                     for i in range(10):
@@ -1014,7 +1054,14 @@ class SeaMap:
                                     if self.battleMap[q][i1] == "[ ]" or self.battleMap[q][i1] == "[O]":
                                         hitNull = q
                                         hitOne = i1
+                                        hit = True
                                         break
+                                if hit == True:
+                                    break
+                            if hit == True:
+                                break
+
+
 
         if self.battleMap[hitNull][hitOne] == "[ ]":
             self.battleMap[hitNull][hitOne] = "[*]"
@@ -1036,6 +1083,7 @@ class SeaMap:
                 # обозначить
                 hitNullNull = hitNull
                 hitOneOne = hitOne
+                print(str(hitNull)+" "+str(hitOne)+"  "+self.botMemory)
                 # передать для определения направления
                 if demolitionAlgorithm(hitNull, hitOne):
                     self.artificialIntelligence()
@@ -1046,7 +1094,11 @@ class SeaMap:
         print("Добропожаловать в")
         print(
             "--------------------------МОРСКОЙ БОЙ--------------------------")
-        time.sleep(2)
+        # self.battleMap[0][6] = "[O]"
+        # self.battleMap[0][7] = "[O]"
+        # self.battleMap[0][8] = "[O]"
+        # self.battleMap[0][9] = "[O]"
+        time.sleep(1)
         print("\nДавайте начнем игру!")
         time.sleep(1)
         self.creatingShipsAutomatically(self.battleMapBot)
