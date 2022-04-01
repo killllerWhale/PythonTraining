@@ -1403,7 +1403,7 @@ class Ui_MainWindow(object):
         for i in range(10):
             for i1 in range(10):
                 if a.battleMap[i][i1] == "[O]":
-                    button_name = "pushButton" + str(i) + str(i1)
+                    button_name = "Название кнопки"
                     button = getattr(self, button_name)
                     button.setText("O")
         self.button_processing()

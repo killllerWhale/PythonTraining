@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="delet"/>
+  <qresource prefix="newPrefix">
+    <file>../../../all/Загрузки/Vector (1).svg</file>
+  </qresource>
+</RCC>
